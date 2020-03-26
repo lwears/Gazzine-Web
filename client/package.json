@@ -10,6 +10,7 @@
     "functions": "functions-framework --target=getAllPosts",
     "build": "tsc ./cloudFunctions/*.ts"
   },
+  "proxy": "http://localhost:8080",
   "jest": {
     "transform": {
       ".(ts|tsx)": "ts-jest"
@@ -26,6 +27,7 @@
     "axios": "^0.19.2",
     "dotenv": "^8.2.0",
     "expo": "~36.0.0",
+    "http-proxy-middleware": "^1.0.3",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",

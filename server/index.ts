@@ -4,6 +4,8 @@ import fetchAllPosts from './fetcher';
 
 const getAllPosts = async (req, res) => {
   const result = await fetchAllPosts();
+  res.set('Access-Control-Allow-Origin', "*")
+  res.set('Access-Control-Allow-Methods', 'GET, POST')
   res.json(result);
 };
 

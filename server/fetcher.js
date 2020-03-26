@@ -35,8 +35,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
-var axios_1 = require("axios");
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var axios_1 = __importDefault(require("axios"));
 require('dotenv').config();
 var baseUrl = process.env.BASEURL;
 var fetchAllPosts = function (page) {
@@ -45,7 +48,7 @@ var fetchAllPosts = function (page) {
         var result;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1["default"].get(baseUrl + "posts?page=" + page)];
+                case 0: return [4 /*yield*/, axios_1.default.get(baseUrl + "posts?page=" + page)];
                 case 1:
                     result = _a.sent();
                     return [2 /*return*/, Promise.resolve(result.data)];
@@ -53,4 +56,4 @@ var fetchAllPosts = function (page) {
         });
     });
 };
-exports["default"] = fetchAllPosts;
+exports.default = fetchAllPosts;
