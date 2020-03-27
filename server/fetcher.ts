@@ -10,4 +10,9 @@ const fetchAllPosts = async (page: number = 1) => {
   return Promise.resolve(result.data);
 };
 
-export default fetchAllPosts;
+const fetchSinglePost = async (id: number) => {
+  const result = await axios.get(`${baseUrl}posts?include=${id}`);
+  return Promise.resolve(result.data);
+};
+
+module.exports = { fetchAllPosts, fetchSinglePost };

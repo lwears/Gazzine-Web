@@ -56,4 +56,15 @@ var fetchAllPosts = function (page) {
         });
     });
 };
-exports.default = fetchAllPosts;
+var fetchSinglePost = function (id) { return __awaiter(void 0, void 0, void 0, function () {
+    var result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, axios_1.default.get(baseUrl + "posts?include=" + id)];
+            case 1:
+                result = _a.sent();
+                return [2 /*return*/, Promise.resolve(result.data)];
+        }
+    });
+}); };
+module.exports = { fetchAllPosts: fetchAllPosts, fetchSinglePost: fetchSinglePost };

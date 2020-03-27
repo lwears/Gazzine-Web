@@ -9,4 +9,8 @@ const getAllPosts = async (req, res) => {
   res.json(result);
 };
 
-module.exports = { getAllPosts };
+const getSinglePost = async (req, res) => {
+
+};
+
+module.exports = { getAllPosts, getSinglePost };

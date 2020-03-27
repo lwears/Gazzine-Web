@@ -55,4 +55,9 @@ var getAllPosts = function (req, res) { return __awaiter(void 0, void 0, void 0,
         }
     });
 }); };
-module.exports = { getAllPosts: getAllPosts };
+var getSinglePost = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        return [2 /*return*/];
+    });
+}); };
+module.exports = { getAllPosts: getAllPosts, getSinglePost: getSinglePost };

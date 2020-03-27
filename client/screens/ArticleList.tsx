@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
-const Item = ({article}: object) => {
-
-  const onPress = () => {console.log(article.slug)};
+const Item = ({article, navigation}) => {
+  
+  const onPress = () => {navigation.navigate('Article', { id: article.id })};
    
   return (
     <View>
@@ -40,7 +40,7 @@ function ArticleList({ navigation }) {
     <View style={styles.container}>
       <FlatList
         data={articles}
-        renderItem={({item}) => <Item article={item} /> }
+        renderItem={({item}) => <Item article={item} navigation={navigation} /> }
         keyExtractor={item => item.id.toString()}
         />
     </View>
