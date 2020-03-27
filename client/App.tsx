@@ -1,56 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
-import axios from 'axios';
+import React from 'react';
+import { StyleSheet, View, Text } from 'react-native';
 
-const Item = ({article}: object) => {
+import Navigator from './Navigation/Navigator';
 
-  const onPress = () => {console.log(article.slug)};
-   
+
+export default function App() { 
   return (
-    <View>
-      <TouchableOpacity onPress={onPress}>
-        <Text>{article.title.rendered}</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
-
-export default function App() {
-  const [articles, setArticles] = useState(null);
-
-  const updateArticles = async () => {
-    const {data} = await axios.get('http://localhost:8080');
-    setArticles(data);
-  };
-
-  useEffect(() => {
-    updateArticles();
-  }, []);
-
-  if (articles === null) {
-    return (
-      <View style={styles.container}>
-        <Text>loading...</Text>
-      </View>
-    )
-  }
-
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={articles}
-        renderItem={({item}) => <Item article={item} /> }
-        keyExtractor={item => item.id.toString()}
-      />
+    <View style={styles.outer}>
+      <Navigator />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  outer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
