@@ -1,21 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
-export default function App() {
-  const [articles, setArticles] = useState(undefined);
+const Item = ({article}: object) => {
 
-  const updateArticles = () => {
-    axios.get('http://localhost:8080')
-      .then(res => res.data)
-      .then(data => setArticles(data));
-  }
+  const onPress = () => {console.log(article.slug)};
+   
+  return (
+    <View>
+      <TouchableOpacity onPress={onPress}>
+        <Text>{article.title.rendered}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+export default function App() {
+  const [articles, setArticles] = useState(null);
+
+  const updateArticles = async () => {
+    const {data} = await axios.get('http://localhost:8080');
+    setArticles(data);
+  };
 
   useEffect(() => {
     updateArticles();
   }, []);
 
-  if (articles === undefined) {
+  if (articles === null) {
     return (
       <View style={styles.container}>
         <Text>loading...</Text>
@@ -25,7 +37,11 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>{JSON.stringify(articles)}</Text>
+      <FlatList
+        data={articles}
+        renderItem={({item}) => <Item article={item} /> }
+        keyExtractor={item => item.id.toString()}
+      />
     </View>
   );
 }

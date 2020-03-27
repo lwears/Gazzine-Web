@@ -15,6 +15,7 @@ web-report/
 
 # client
 client/node_modules
+client/.expo
 
 # macOS
 .DS_Store
