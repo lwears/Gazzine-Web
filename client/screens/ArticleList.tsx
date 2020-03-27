@@ -4,12 +4,12 @@ import axios from 'axios';
 
 const Item = ({article, navigation}) => {
   
-  const onPress = () => {navigation.navigate('Article', { id: article.id })};
+  const onPress = () => {navigation.navigate('Article', { id: article.id })};  
    
   return (
     <View>
       <TouchableOpacity onPress={onPress}>
-        <Text>{article.title.rendered}</Text>
+        <Text>{article.title}</Text>
       </TouchableOpacity>
     </View>
   );

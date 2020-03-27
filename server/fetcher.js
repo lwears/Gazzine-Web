@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -40,31 +51,47 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
+var html_entities_1 = require("html-entities");
 require('dotenv').config();
 var baseUrl = process.env.BASEURL;
 var fetchAllPosts = function (page) {
     if (page === void 0) { page = 1; }
     return __awaiter(void 0, void 0, void 0, function () {
-        var result;
+        var data, result;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1.default.get(baseUrl + "posts?page=" + page)];
+                case 0: return [4 /*yield*/, axios_1.default.get(baseUrl + "posts?page=" + page + "&_embed")];
                 case 1:
-                    result = _a.sent();
-                    return [2 /*return*/, Promise.resolve(result.data)];
+                    data = (_a.sent()).data;
+                    result = data.map(function (article) { return reshapeArticles(article); });
+                    return [2 /*return*/, Promise.resolve(result)];
             }
         });
     });
 };
 var fetchSinglePost = function (id) { return __awaiter(void 0, void 0, void 0, function () {
-    var result;
+    var data, result;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, axios_1.default.get(baseUrl + "posts?include=" + id)];
+            case 0: return [4 /*yield*/, axios_1.default.get(baseUrl + "posts?include=" + id + "&_embed")];
             case 1:
-                result = _a.sent();
-                return [2 /*return*/, Promise.resolve(result.data)];
+                data = (_a.sent()).data;
+                result = data.map(function (article) { return addContent(article); });
+                return [2 /*return*/, Promise.resolve(result)];
         }
     });
 }); };
+var reshapeArticles = function (data) {
+    return {
+        id: data.id,
+        category: data._embedded['wp:term'][0].map(function (cat) { return ({ id: cat.id, name: cat.name }); }),
+        modified: new Date(data.modified),
+        title: html_entities_1.XmlEntities.decode(data.title.rendered),
+        author: data.coauthors[0].display_name,
+        image: data._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url,
+    };
+};
+var addContent = function (data) {
+    return __assign(__assign({}, reshapeArticles(data)), { body: html_entities_1.AllHtmlEntities.decode(data.content.rendered.trim()) });
+};
 module.exports = { fetchAllPosts: fetchAllPosts, fetchSinglePost: fetchSinglePost };

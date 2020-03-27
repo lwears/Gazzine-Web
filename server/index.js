@@ -35,17 +35,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var fetcher_1 = __importDefault(require("./fetcher"));
-// exports.helloWorld = (req, res) => res.send("Hello, World!");
+var fetcher_1 = require("./fetcher");
 var getAllPosts = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var result;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, fetcher_1.default()];
+            case 0: return [4 /*yield*/, fetcher_1.fetchAllPosts()];
             case 1:
                 result = _a.sent();
                 res.set('Access-Control-Allow-Origin', "*");
@@ -56,8 +52,27 @@ var getAllPosts = function (req, res) { return __awaiter(void 0, void 0, void 0,
     });
 }); };
 var getSinglePost = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, result;
     return __generator(this, function (_a) {
-        return [2 /*return*/];
+        switch (_a.label) {
+            case 0:
+                id = req.query.id;
+                console.log(req.query);
+                if (!id) return [3 /*break*/, 2];
+                return [4 /*yield*/, fetcher_1.fetchSinglePost(id)];
+            case 1:
+                result = _a.sent();
+                res.set('Access-Control-Allow-Origin', "*");
+                res.set('Access-Control-Allow-Methods', 'GET, POST');
+                res.json(result);
+                return [3 /*break*/, 3];
+            case 2:
+                res.set('Access-Control-Allow-Origin', "*");
+                res.set('Access-Control-Allow-Methods', 'GET, POST');
+                res.sendStatus(404);
+                _a.label = 3;
+            case 3: return [2 /*return*/];
+        }
     });
 }); };
 module.exports = { getAllPosts: getAllPosts, getSinglePost: getSinglePost };

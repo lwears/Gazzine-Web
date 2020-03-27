@@ -1,15 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, ScrollView, View,  Text } from 'react-native';
+import axios from 'axios';
 
 function Article({ navigation }) {
+  const [article, setArticle] = useState(undefined);
+  const { id } = navigation.state.params;
+
+  const fetchArticle = async () => {
+    const { data } = await axios.get(`http://localhost:8081/?id=${id}`);
+    setArticle(data[0]);    
+  }
+
+  useEffect(() => {
+    fetchArticle();
+  }, []);
   
-  console.log(navigation.state.params.id);
-  
+  if(article === undefined) {
+    return (
+      <View style={styles.container}>
+        <Text>Hello</Text>
+      </View>
+    )
+  }
   
   return (
-    <View style={styles.container}>
-      <Text>Hello</Text>
-    </View>
+    <ScrollView>
+      <Text dangerouslySetInnerHTML={{__html: article.body}}></Text>
+    </ScrollView>
   );
 }
 
