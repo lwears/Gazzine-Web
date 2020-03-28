@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, View,  Text, FlatList, Image } from 'react-native';
+import React, { useState, useEffect, FunctionComponent } from 'react';
+import { StyleSheet, ScrollView, View,  Text, FlatList, Image, Dimensions} from 'react-native';
 import axios from 'axios';
 
-function Article({ navigation }) {
+
+const Article: FunctionComponent = ({ navigation }) => {
   const [article, setArticle] = useState(undefined);
   const { id } = navigation.state.params;
 
@@ -25,6 +26,13 @@ function Article({ navigation }) {
   
   return (
     <ScrollView>
+      <Image style={styles.topImage} source={{uri: article.image}}/>
+      <FlatList
+        data={article.category}
+        renderItem={({ item }) => <Text style={styles.quote}>{item.name}</Text>}
+      />
+      <Text>{article.author}</Text>
+      <Text>{article.title}</Text>
       <FlatList
         data={article.body.elements}
         renderItem={({ item }) => buildArticle(item)}
@@ -45,7 +53,6 @@ const buildArticle = (element) => {
       );
       break;
     case 'image':
-      console.log('ImageLog', element.src); 
       return (
         <> 
           <Image style={styles.image} source={{uri: element.src}}/>
@@ -87,11 +94,19 @@ const buildParagraph = (content) => {
   }
 }
 
+const width = Dimensions.get('window').width; //full width
+const height = Dimensions.get('window').height; //full height
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  topImage: {
+    width: width,
+    height: 250,
+    resizeMode: 'stretch',
   },
   image: {
     width: 200,
@@ -102,6 +117,8 @@ const styles = StyleSheet.create({
     color: 'red'
   }
 });
+
+
 
 Article.navigationOptions = {
   title: "Article"

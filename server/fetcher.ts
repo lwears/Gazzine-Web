@@ -1,6 +1,7 @@
 import axios from 'axios';
 import parseArticle from './parsers/parseArticle';
 import { XmlEntities, AllHtmlEntities } from 'html-entities';
+import { Article } from './types';
 
 require('dotenv').config();
 
@@ -8,13 +9,13 @@ const baseUrl = process.env.BASEURL;
 
 const fetchAllPosts = async (page: number = 1) => {
   const { data } = await axios.get(`${baseUrl}posts?page=${page}&_embed`);
-  const result = data.map((article) => reshapeArticles(article));
+  const result = data.map((article: Article) => reshapeArticles(article));
   return Promise.resolve(result);
 };
 
 const fetchSinglePost = async (id: number) => {
   const {data} = await axios.get(`${baseUrl}posts?include=${id}&_embed`);
-  const result = data.map((article) => addContent(article));
+  const result = data.map((article: Article) => addContent(article));
   return Promise.resolve(result);
 };
 
