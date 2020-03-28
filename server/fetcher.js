@@ -51,6 +51,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
+var parseArticle_1 = __importDefault(require("./parsers/parseArticle"));
 var html_entities_1 = require("html-entities");
 require('dotenv').config();
 var baseUrl = process.env.BASEURL;
@@ -92,6 +93,6 @@ var reshapeArticles = function (data) {
     };
 };
 var addContent = function (data) {
-    return __assign(__assign({}, reshapeArticles(data)), { body: html_entities_1.AllHtmlEntities.decode(data.content.rendered.trim()) });
+    return __assign(__assign({}, reshapeArticles(data)), { body: parseArticle_1.default(html_entities_1.AllHtmlEntities.decode(data.content.rendered.trim())) });
 };
 module.exports = { fetchAllPosts: fetchAllPosts, fetchSinglePost: fetchSinglePost };

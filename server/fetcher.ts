@@ -1,4 +1,5 @@
 import axios from 'axios';
+import parseArticle from './parsers/parseArticle';
 import { XmlEntities, AllHtmlEntities } from 'html-entities';
 
 require('dotenv').config();
@@ -31,7 +32,7 @@ const reshapeArticles = (data) => {
 const addContent = (data) => {
   return {
     ...reshapeArticles(data),
-    body: AllHtmlEntities.decode(data.content.rendered.trim())
+    body: parseArticle(AllHtmlEntities.decode(data.content.rendered.trim()))
   }
 }
 

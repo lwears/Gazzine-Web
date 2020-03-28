@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, View,  Text } from 'react-native';
+import { StyleSheet, ScrollView, View,  Text, FlatList } from 'react-native';
 import axios from 'axios';
 
 function Article({ navigation }) {
@@ -25,9 +25,50 @@ function Article({ navigation }) {
   
   return (
     <ScrollView>
-      <Text dangerouslySetInnerHTML={{__html: article.body}}></Text>
+      <FlatList
+        data={article.body.elements}
+        renderItem={({ item }) => buildArticle(item)}
+      />
     </ScrollView>
   );
+}
+
+const buildArticle = (element) => {
+  const { type } = element;
+  switch (type) {
+    case 'paragraph':
+      return ( 
+        <FlatList
+          data={element.content}
+          renderItem={({ item }) => buildParagraph(item)}
+        />
+      );
+      break;  
+    default:
+      break;
+  }
+}
+
+const buildParagraph = (content) => {
+  if(content.hasOwnProperty('text')) {
+    if (content.hasOwnProperty('modifiers')) {
+      switch (content.modifiers[0]) {
+        case 'strong':
+          return <Text style={{fontWeight: 'bold'}}>{content.text}</Text>;
+          break;
+          case 'em':
+            return <Text style={{fontStyle: 'italic'}}>{content.text}</Text>;
+            break;
+        default:
+          return <Text>NO FUCKING MODIFIER</Text>;
+          break;
+      }
+    }
+    return <Text>{content.text}</Text>;
+  }
+  if(content.hasOwnProperty('linebreak')) {
+    return <Text>{'\n'}</Text>;
+  }
 }
 
 const styles = StyleSheet.create({
