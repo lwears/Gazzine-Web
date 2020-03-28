@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, View,  Text, FlatList } from 'react-native';
+import { StyleSheet, ScrollView, View,  Text, FlatList, Image } from 'react-native';
 import axios from 'axios';
 
 function Article({ navigation }) {
@@ -43,7 +43,24 @@ const buildArticle = (element) => {
           renderItem={({ item }) => buildParagraph(item)}
         />
       );
-      break;  
+      break;
+    case 'image':
+      console.log('ImageLog', element.src); 
+      return (
+        <> 
+          <Image style={styles.image} source={{uri: element.src}}/>
+          <Text>{element.caption}</Text>
+        </>
+      );
+      break;
+    case 'quote':
+      return (
+        <FlatList
+          data={element.content}
+          renderItem={({ item }) => <Text style={styles.quote}>{item}</Text>}
+        />
+      );
+      break;
     default:
       break;
   }
@@ -52,17 +69,16 @@ const buildArticle = (element) => {
 const buildParagraph = (content) => {
   if(content.hasOwnProperty('text')) {
     if (content.hasOwnProperty('modifiers')) {
-      switch (content.modifiers[0]) {
-        case 'strong':
-          return <Text style={{fontWeight: 'bold'}}>{content.text}</Text>;
-          break;
-          case 'em':
-            return <Text style={{fontStyle: 'italic'}}>{content.text}</Text>;
-            break;
-        default:
-          return <Text>NO FUCKING MODIFIER</Text>;
-          break;
-      }
+      let mod = {};
+      content.modifiers.forEach((modifier) => {
+        if(modifier === 'strong') {
+          mod = {...mod, fontWeight: 'bold'}
+        } 
+        if(modifier === 'em') {
+          mod = {...mod, fontStyle: 'italic'}
+        }
+      })
+      return <Text style={mod}>{content.text}</Text>
     }
     return <Text>{content.text}</Text>;
   }
@@ -77,6 +93,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  image: {
+    width: 200,
+    height: 200,
+    resizeMode: 'stretch',
+  },
+  quote: {
+    color: 'red'
+  }
 });
 
 Article.navigationOptions = {
