@@ -5,7 +5,9 @@ import { Article } from './types';
 
 require('dotenv').config();
 
-const baseUrl = process.env.BASEURL;
+// const baseUrl = process.env.BASEURL;
+const baseUrl = 'https://www.gazzine.com/wp-json/wp/v2/';
+
 
 const fetchAllPosts = async (page: number = 1) => {
   const { data } = await axios.get(`${baseUrl}posts?page=${page}&_embed`);
