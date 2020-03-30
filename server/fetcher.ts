@@ -1,7 +1,6 @@
 import axios from 'axios';
 import parseArticle from './parsers/parseArticle';
 import { XmlEntities, AllHtmlEntities } from 'html-entities';
-import { Article } from './types';
 
 require('dotenv').config();
 
@@ -9,15 +8,15 @@ require('dotenv').config();
 const baseUrl = 'https://www.gazzine.com/wp-json/wp/v2/';
 
 
-const fetchAllPosts = async (page: number = 1) => {
+const fetchAllPosts = async (page) => {
   const { data } = await axios.get(`${baseUrl}posts?page=${page}&_embed`);
-  const result = data.map((article: Article) => reshapeArticles(article));
+  const result = data.map((article) => reshapeArticles(article));
   return Promise.resolve(result);
 };
 
-const fetchSinglePost = async (id: number) => {
+const fetchSinglePost = async (id) => {
   const {data} = await axios.get(`${baseUrl}posts?include=${id}&_embed`);
-  const result = data.map((article: Article) => addContent(article));
+  const result = data.map((article) => addContent(article));
   return Promise.resolve(result);
 };
 
