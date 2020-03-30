@@ -1,9 +1,10 @@
-import React, { useState, useEffect, FunctionComponent } from 'react';
+import React, { useState, useEffect, FunctionComponent, Props } from 'react';
 import { StyleSheet, ScrollView, View,  Text, FlatList, Image, Dimensions} from 'react-native';
+import { NavigationScreenProp, NavigationScreenComponent } from 'react-navigation'
 import axios from 'axios';
 
 
-const Article: FunctionComponent = ({ navigation }) => {
+const Article: NavigationScreenComponent<Props> = ({ navigation }) => {
   const [article, setArticle] = useState(undefined);
   const { id } = navigation.state.params;
 
@@ -68,6 +69,9 @@ const buildArticle = (element) => {
         />
       );
       break;
+    case 'header':
+      return <Text h1>{element.text}</Text>
+      break;
     default:
       break;
   }
@@ -94,8 +98,8 @@ const buildParagraph = (content) => {
   }
 }
 
-const width = Dimensions.get('window').width; //full width
-const height = Dimensions.get('window').height; //full height
+const { width, height } = Dimensions.get('window'); //full width
+const ratio = width/300;
 
 const styles = StyleSheet.create({
   container: {
@@ -105,13 +109,14 @@ const styles = StyleSheet.create({
   },
   topImage: {
     width: width,
-    height: 250,
-    resizeMode: 'stretch',
+    height: 222 * width/300,
+    resizeMode: 'cover'
   },
   image: {
-    width: 200,
-    height: 200,
-    resizeMode: 'stretch',
+    width: width,
+    height: 222 * width/300,
+    resizeMode: 'center',
+    paddingHorizontal: 10
   },
   quote: {
     color: 'red'
