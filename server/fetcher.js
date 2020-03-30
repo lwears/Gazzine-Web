@@ -54,7 +54,8 @@ var axios_1 = __importDefault(require("axios"));
 var parseArticle_1 = __importDefault(require("./parsers/parseArticle"));
 var html_entities_1 = require("html-entities");
 require('dotenv').config();
-var baseUrl = process.env.BASEURL;
+// const baseUrl = process.env.BASEURL;
+var baseUrl = 'https://www.gazzine.com/wp-json/wp/v2/';
 var fetchAllPosts = function (page) {
     if (page === void 0) { page = 1; }
     return __awaiter(void 0, void 0, void 0, function () {

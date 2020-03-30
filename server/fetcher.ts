@@ -4,15 +4,17 @@ import { XmlEntities, AllHtmlEntities } from 'html-entities';
 
 require('dotenv').config();
 
-const baseUrl = process.env.BASEURL;
+// const baseUrl = process.env.BASEURL;
+const baseUrl = 'https://www.gazzine.com/wp-json/wp/v2/';
 
-const fetchAllPosts = async (page: number = 1) => {
+
+const fetchAllPosts = async (page) => {
   const { data } = await axios.get(`${baseUrl}posts?page=${page}&_embed`);
   const result = data.map((article) => reshapeArticles(article));
   return Promise.resolve(result);
 };
 
-const fetchSinglePost = async (id: number) => {
+const fetchSinglePost = async (id) => {
   const {data} = await axios.get(`${baseUrl}posts?include=${id}&_embed`);
   const result = data.map((article) => addContent(article));
   return Promise.resolve(result);

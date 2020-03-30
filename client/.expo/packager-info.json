@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 33938,
-  "expoServerNgrokUrl": "https://s7-ycr.anonymous.client.exp.direct",
-  "packagerNgrokUrl": "https://packager.s7-ycr.anonymous.client.exp.direct",
-  "ngrokPid": 33956,
+  "packagerPort": 19004,
+  "packagerPid": 47798,
+  "expoServerNgrokUrl": "https://y4-wiv.anonymous.client.exp.direct",
+  "packagerNgrokUrl": "https://packager.y4-wiv.anonymous.client.exp.direct",
+  "ngrokPid": 47816,
   "webpackServerPort": 19006
 }
