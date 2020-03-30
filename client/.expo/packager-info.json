@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19004,
-  "packagerPid": 47798,
-  "expoServerNgrokUrl": "https://y4-wiv.anonymous.client.exp.direct",
-  "packagerNgrokUrl": "https://packager.y4-wiv.anonymous.client.exp.direct",
-  "ngrokPid": 47816,
+  "packagerPid": 52553,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": 19006
 }

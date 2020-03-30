@@ -5,8 +5,9 @@ import Article from '../screens/Article';
 
 const Navigator = createStackNavigator(
   {
-    ArticleList: ArticleList,
-    Article: Article
+    ArticleBySlug: { screen: Article, path: ':slug'},
+    ArticleList: { screen: ArticleList, path: '/'},
+    Article: Article,
   },
   {
     headerMode: 'none',

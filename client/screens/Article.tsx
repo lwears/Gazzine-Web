@@ -1,16 +1,28 @@
 import React, { useState, useEffect, FunctionComponent, Props } from 'react';
 import { StyleSheet, ScrollView, View,  Text, FlatList, Image, Dimensions} from 'react-native';
-import { NavigationScreenProp, NavigationScreenComponent } from 'react-navigation'
+// import { NavigationScreenProp, NavigationScreenComponent } from 'react-navigation'
 import axios from 'axios';
 
-
-const Article: NavigationScreenComponent<Props> = ({ navigation }) => {
+const Article = ({ navigation, route }) => {
+  console.log(navigation.state);
+  
   const [article, setArticle] = useState(undefined);
-  const { id } = navigation.state.params;
-
+  const { routeName } = navigation.state;
+  
   const fetchArticle = async () => {
-    const { data } = await axios.get(`http://localhost:8081/?id=${id}`);
-    setArticle(data[0]);    
+    console.log(routeName);
+    if(routeName === 'Article') {
+      const { id } = navigation.state.params;
+      const { data } = await axios.get(`http://localhost:8081/?id=${id}`);
+      setArticle(data);
+      console.log(data, '+++++++++++++');
+      
+      window.history.replaceState('object or string', 'Title', `/${data.slug}`);
+    } else {
+      const { slug } = navigation.state.params;
+      const { data } = await axios.get(`http://localhost:8081/?slug=${slug}`);
+      setArticle(data);
+    }
   }
 
   useEffect(() => {
@@ -20,13 +32,21 @@ const Article: NavigationScreenComponent<Props> = ({ navigation }) => {
   if(article === undefined) {
     return (
       <View style={styles.container}>
-        <Text>Hello</Text>
+        <Text>Loading...</Text>
       </View>
     )
   }
   
   return (
     <ScrollView>
+      <Image style={styles.topImage} source={{uri: article.image}}/>
+      <FlatList
+        data={article.category}
+        renderItem={({ item }) => <Text style={styles.quote}>{item.name}</Text>}
+      />
+      <Text>{article.authors[0].name}</Text>
+      <Image style={styles.image} source={{ uri: article.authors[0].profilePictureUrl}} />
+      <Text>{article.title}</Text>
       <FlatList
         data={article.body.elements}
         renderItem={({ item }) => buildArticle(item)}
@@ -47,7 +67,6 @@ const buildArticle = (element) => {
       );
       break;
     case 'image':
-      console.log('ImageLog', element.src); 
       return (
         <> 
           <Image style={styles.image} source={{uri: element.src}}/>
@@ -65,6 +84,22 @@ const buildArticle = (element) => {
       break;
     case 'header':
       return <Text>{element.text}</Text>
+      break;
+    case 'imageGallery':
+      return (
+        <FlatList
+        data={element.images}
+        renderItem={({ item }) => <Image style={styles.image} source={{uri: item.src}}/>}
+      />
+      )
+      break;
+    case 'listItem':
+      return (
+        <FlatList
+        data={element.content}
+        renderItem={({ item }) => <Text>*{item.text}</Text>}
+      />
+      )
       break;
     default:
       break;
@@ -121,6 +156,6 @@ Article.navigationOptions = {
   title: "Article"
 }
 
-Article.path = "article";
+// Article.path = "";
 
 export default Article;
