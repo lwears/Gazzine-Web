@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, View,  Text, FlatList, Image } from 'react-native';
+import React, { useState, useEffect, FunctionComponent, Props } from 'react';
+import { StyleSheet, ScrollView, View,  Text, FlatList, Image, Dimensions} from 'react-native';
+import { NavigationScreenProp, NavigationScreenComponent } from 'react-navigation'
 import axios from 'axios';
 
-function Article({ navigation }) {
+
+const Article: NavigationScreenComponent<Props> = ({ navigation }) => {
   const [article, setArticle] = useState(undefined);
   const { id } = navigation.state.params;
 
@@ -25,6 +27,13 @@ function Article({ navigation }) {
   
   return (
     <ScrollView>
+      <Image style={styles.topImage} source={{uri: article.image}}/>
+      <FlatList
+        data={article.category}
+        renderItem={({ item }) => <Text style={styles.quote}>{item.name}</Text>}
+      />
+      <Text>{article.author}</Text>
+      <Text>{article.title}</Text>
       <FlatList
         data={article.body.elements}
         renderItem={({ item }) => buildArticle(item)}
@@ -45,7 +54,6 @@ const buildArticle = (element) => {
       );
       break;
     case 'image':
-      console.log('ImageLog', element.src); 
       return (
         <> 
           <Image style={styles.image} source={{uri: element.src}}/>
@@ -60,6 +68,9 @@ const buildArticle = (element) => {
           renderItem={({ item }) => <Text style={styles.quote}>{item}</Text>}
         />
       );
+      break;
+    case 'header':
+      return <Text>{element.text}</Text>
       break;
     default:
       break;
@@ -87,21 +98,32 @@ const buildParagraph = (content) => {
   }
 }
 
+const { width, height } = Dimensions.get('window'); //full width
+const ratio = width/300;
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  topImage: {
+    width: width,
+    height: 222 * width/300,
+    resizeMode: 'cover'
+  },
   image: {
-    width: 200,
-    height: 200,
-    resizeMode: 'stretch',
+    width: width,
+    height: 222 * width/300,
+    resizeMode: 'center',
+    paddingHorizontal: 10
   },
   quote: {
     color: 'red'
   }
 });
+
+
 
 Article.navigationOptions = {
   title: "Article"

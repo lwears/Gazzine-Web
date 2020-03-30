@@ -14,6 +14,7 @@ web-report/
 /server/.env
 /server/parsers
 /server/types.ts
+/server/types.js
 
 # client
 client/node_modules
