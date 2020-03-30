@@ -70,7 +70,7 @@ const buildArticle = (element) => {
       );
       break;
     case 'header':
-      return <Text h1>{element.text}</Text>
+      return <Text>{element.text}</Text>
       break;
     default:
       break;
