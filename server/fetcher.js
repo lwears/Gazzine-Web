@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -19,105 +8,53 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var axios_1 = __importDefault(require("axios"));
-var parseArticle_1 = __importDefault(require("./parsers/parseArticle"));
-var html_entities_1 = require("html-entities");
+const axios_1 = __importDefault(require("axios"));
+const parseArticle_1 = __importDefault(require("./parsers/parseArticle"));
+const html_entities_1 = require("html-entities");
 require('dotenv').config();
 // const baseUrl = process.env.BASEURL;
-var baseUrl = 'https://www.gazzine.com/wp-json/wp/v2/';
-var fetchAllPosts = function (page) {
-    if (page === void 0) { page = 1; }
-    return __awaiter(void 0, void 0, void 0, function () {
-        var data, result;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1.default.get(baseUrl + "posts?page=" + page + "&_embed")];
-                case 1:
-                    data = (_a.sent()).data;
-                    result = data.map(function (article) { return reshapeArticles(article); });
-                    return [2 /*return*/, Promise.resolve(result)];
-            }
-        });
-    });
-};
-var fetchSinglePostById = function (id) { return __awaiter(void 0, void 0, void 0, function () {
-    var data, result;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, axios_1.default.get(baseUrl + "posts/" + id + "?_embed")];
-            case 1:
-                data = (_a.sent()).data;
-                result = addContent(data);
-                return [2 /*return*/, Promise.resolve(result)];
-        }
-    });
-}); };
-var fetchSinglePostBySlug = function (slug) { return __awaiter(void 0, void 0, void 0, function () {
-    var newSlug, data, result;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                newSlug = encodeURI(slug);
-                console.log(newSlug);
-                return [4 /*yield*/, axios_1.default.get(baseUrl + "posts/?slug=" + newSlug + "&_embed")];
-            case 1:
-                data = (_a.sent()).data;
-                result = addContent(data[0]);
-                return [2 /*return*/, Promise.resolve(result)];
-        }
-    });
-}); };
-var authorMapper = function (_a) {
-    var display_name = _a.display_name, user_id = _a.user_id, profile_picture = _a.profile_picture;
-    return ({
-        id: user_id,
-        name: display_name,
-        profilePictureUrl: "https://www.gazzine.com" + profile_picture,
-    });
-};
-var reshapeArticles = function (data) {
+const baseUrl = 'https://www.gazzine.com/wp-json/wp/v2/';
+const fetchAllPosts = (page = 1) => __awaiter(void 0, void 0, void 0, function* () {
+    const { data } = yield axios_1.default.get(`${baseUrl}posts?page=${page}&_embed`);
+    const result = data.map((article) => reshapeArticles(article));
+    return Promise.resolve(result);
+});
+const fetchSinglePostById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const { data } = yield axios_1.default.get(`${baseUrl}posts/${id}?_embed`);
+    const result = addContent(data);
+    return Promise.resolve(result);
+});
+const fetchSinglePostBySlug = (slug) => __awaiter(void 0, void 0, void 0, function* () {
+    const newSlug = encodeURI(slug);
+    const { data } = yield axios_1.default.get(`${baseUrl}posts/?slug=${newSlug}&_embed`);
+    const result = addContent(data[0]);
+    return Promise.resolve(result);
+});
+const authorMapper = ({ display_name, user_id, profile_picture }) => ({
+    id: user_id,
+    name: display_name,
+    profilePictureUrl: `https://www.gazzine.com${profile_picture}`,
+});
+const reshapeArticles = (data) => {
     return {
         id: data.id,
         slug: data.slug,
-        category: data._embedded['wp:term'][0].map(function (cat) { return ({ id: cat.id, name: html_entities_1.XmlEntities.decode(cat.name) }); }),
-        modified: new Date(data.modified),
+        category: data._embedded['wp:term'][0].map(cat => ({ id: cat.id, name: html_entities_1.XmlEntities.decode(cat.name) })),
+        modified: new Date(data.modified).toLocaleDateString(undefined, {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+        }),
         title: html_entities_1.XmlEntities.decode(data.title.rendered),
-        authors: (data.coauthors || []).map(function (author) { return authorMapper(author); }),
+        authors: (data.coauthors || []).map(author => authorMapper(author)),
         image: data._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url,
     };
 };
-var addContent = function (data) {
-    return __assign(__assign({}, reshapeArticles(data)), { body: parseArticle_1.default(html_entities_1.AllHtmlEntities.decode(data.content.rendered.trim())) });
+const addContent = (data) => {
+    return Object.assign(Object.assign({}, reshapeArticles(data)), { body: parseArticle_1.default(html_entities_1.AllHtmlEntities.decode(data.content.rendered.trim())) });
 };
-module.exports = { fetchAllPosts: fetchAllPosts, fetchSinglePostById: fetchSinglePostById, fetchSinglePostBySlug: fetchSinglePostBySlug };
+module.exports = { fetchAllPosts, fetchSinglePostById, fetchSinglePostBySlug };

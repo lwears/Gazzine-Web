@@ -1,21 +1,18 @@
 import React, { useState, useEffect, FunctionComponent, Props } from 'react';
-import { StyleSheet, ScrollView, View,  Text, FlatList, Image, Dimensions} from 'react-native';
+import { StyleSheet, ScrollView, View,  Text, FlatList, Image, Dimensions, Linking} from 'react-native';
 // import { NavigationScreenProp, NavigationScreenComponent } from 'react-navigation'
 import axios from 'axios';
 
 const Article = ({ navigation, route }) => {
-  console.log(navigation.state);
   
   const [article, setArticle] = useState(undefined);
   const { routeName } = navigation.state;
   
   const fetchArticle = async () => {
-    console.log(routeName);
     if(routeName === 'Article') {
       const { id } = navigation.state.params;
       const { data } = await axios.get(`http://localhost:8081/?id=${id}`);
       setArticle(data);
-      console.log(data, '+++++++++++++');
       
       window.history.replaceState('object or string', 'Title', `/${data.slug}`);
     } else {
@@ -43,6 +40,7 @@ const Article = ({ navigation, route }) => {
       <FlatList
         data={article.category}
         renderItem={({ item }) => <Text style={styles.quote}>{item.name}</Text>}
+        keyExtractor={item => item.id.toString()}
       />
       <Text>{article.authors[0].name}</Text>
       <Image style={styles.image} source={{ uri: article.authors[0].profilePictureUrl}} />
@@ -50,6 +48,7 @@ const Article = ({ navigation, route }) => {
       <FlatList
         data={article.body.elements}
         renderItem={({ item }) => buildArticle(item)}
+        keyExtractor={(item, i) => i.toString()}
       />
     </ScrollView>
   );
@@ -63,6 +62,7 @@ const buildArticle = (element) => {
         <FlatList
           data={element.content}
           renderItem={({ item }) => buildParagraph(item)}
+          keyExtractor={(item, i) => i.toString()}
         />
       );
       break;
@@ -79,6 +79,7 @@ const buildArticle = (element) => {
         <FlatList
           data={element.content}
           renderItem={({ item }) => <Text style={styles.quote}>{item}</Text>}
+          keyExtractor={(item, i) => i.toString()}
         />
       );
       break;
@@ -90,6 +91,7 @@ const buildArticle = (element) => {
         <FlatList
         data={element.images}
         renderItem={({ item }) => <Image style={styles.image} source={{uri: item.src}}/>}
+        keyExtractor={(item) => item.imageId.toString()}
       />
       )
       break;
@@ -98,6 +100,7 @@ const buildArticle = (element) => {
         <FlatList
         data={element.content}
         renderItem={({ item }) => <Text>*{item.text}</Text>}
+        keyExtractor={(item, i) => i.toString()}
       />
       )
       break;
@@ -108,8 +111,8 @@ const buildArticle = (element) => {
 
 const buildParagraph = (content) => {
   if(content.hasOwnProperty('text')) {
+    let mod = {};
     if (content.hasOwnProperty('modifiers')) {
-      let mod = {};
       content.modifiers.forEach((modifier) => {
         if(modifier === 'strong') {
           mod = {...mod, fontWeight: 'bold'}
@@ -118,13 +121,17 @@ const buildParagraph = (content) => {
           mod = {...mod, fontStyle: 'italic'}
         }
       })
-      return <Text style={mod}>{content.text}</Text>
+      // return <Text style={mod}>{content.text}</Text>
+    } 
+    if (content.hasOwnProperty('href')) {
+      return <Text style={mod} onPress={() => Linking.openURL(content.href)}>{content.text}</Text>;
     }
-    return <Text>{content.text}</Text>;
+    return <Text style={mod}>{content.text}</Text>;
   }
   if(content.hasOwnProperty('linebreak')) {
     return <Text>{'\n'}</Text>;
   }
+  
 }
 
 const { width, height } = Dimensions.get('window'); //full width

@@ -22,7 +22,6 @@ const fetchSinglePostById = async (id) => {
 
 const fetchSinglePostBySlug = async (slug) => {
   const newSlug = encodeURI(slug);
-  console.log(newSlug);
   const {data} = await axios.get(`${baseUrl}posts/?slug=${newSlug}&_embed`);
   const result = addContent(data[0]);
   return Promise.resolve(result);
@@ -39,7 +38,11 @@ const reshapeArticles = (data) => {
     id: data.id,
     slug: data.slug,
     category: data._embedded['wp:term'][0].map(cat => ({id: cat.id, name: XmlEntities.decode(cat.name)})),
-    modified: new Date(data.modified),
+    modified: new Date(data.modified).toLocaleDateString(undefined, {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    }),
     title: XmlEntities.decode(data.title.rendered),
     authors: ( data.coauthors || [] ).map(author => authorMapper(author)),
     image: data._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url,
