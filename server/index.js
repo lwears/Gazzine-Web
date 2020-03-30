@@ -52,26 +52,36 @@ var getAllPosts = function (req, res) { return __awaiter(void 0, void 0, void 0,
     });
 }); };
 var getSinglePost = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, result;
+    var id, slug, result, result;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 id = req.query.id;
+                slug = req.query.slug;
                 console.log(req.query);
                 if (!id) return [3 /*break*/, 2];
-                return [4 /*yield*/, fetcher_1.fetchSinglePost(id)];
+                return [4 /*yield*/, fetcher_1.fetchSinglePostById(id)];
             case 1:
                 result = _a.sent();
                 res.set('Access-Control-Allow-Origin', "*");
                 res.set('Access-Control-Allow-Methods', 'GET, POST');
                 res.json(result);
-                return [3 /*break*/, 3];
+                return [3 /*break*/, 5];
             case 2:
+                if (!slug) return [3 /*break*/, 4];
+                return [4 /*yield*/, fetcher_1.fetchSinglePostBySlug(slug)];
+            case 3:
+                result = _a.sent();
+                res.set('Access-Control-Allow-Origin', "*");
+                res.set('Access-Control-Allow-Methods', 'GET, POST');
+                res.json(result);
+                return [3 /*break*/, 5];
+            case 4:
                 res.set('Access-Control-Allow-Origin', "*");
                 res.set('Access-Control-Allow-Methods', 'GET, POST');
                 res.sendStatus(404);
-                _a.label = 3;
-            case 3: return [2 /*return*/];
+                _a.label = 5;
+            case 5: return [2 /*return*/];
         }
     });
 }); };

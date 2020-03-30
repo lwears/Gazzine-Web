@@ -71,29 +71,53 @@ var fetchAllPosts = function (page) {
         });
     });
 };
-var fetchSinglePost = function (id) { return __awaiter(void 0, void 0, void 0, function () {
+var fetchSinglePostById = function (id) { return __awaiter(void 0, void 0, void 0, function () {
     var data, result;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, axios_1.default.get(baseUrl + "posts?include=" + id + "&_embed")];
+            case 0: return [4 /*yield*/, axios_1.default.get(baseUrl + "posts/" + id + "?_embed")];
             case 1:
                 data = (_a.sent()).data;
-                result = data.map(function (article) { return addContent(article); });
+                result = addContent(data);
                 return [2 /*return*/, Promise.resolve(result)];
         }
     });
 }); };
+var fetchSinglePostBySlug = function (slug) { return __awaiter(void 0, void 0, void 0, function () {
+    var newSlug, data, result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                newSlug = encodeURI(slug);
+                console.log(newSlug);
+                return [4 /*yield*/, axios_1.default.get(baseUrl + "posts/?slug=" + newSlug + "&_embed")];
+            case 1:
+                data = (_a.sent()).data;
+                result = addContent(data[0]);
+                return [2 /*return*/, Promise.resolve(result)];
+        }
+    });
+}); };
+var authorMapper = function (_a) {
+    var display_name = _a.display_name, user_id = _a.user_id, profile_picture = _a.profile_picture;
+    return ({
+        id: user_id,
+        name: display_name,
+        profilePictureUrl: "https://www.gazzine.com" + profile_picture,
+    });
+};
 var reshapeArticles = function (data) {
     return {
         id: data.id,
-        category: data._embedded['wp:term'][0].map(function (cat) { return ({ id: cat.id, name: cat.name }); }),
+        slug: data.slug,
+        category: data._embedded['wp:term'][0].map(function (cat) { return ({ id: cat.id, name: html_entities_1.XmlEntities.decode(cat.name) }); }),
         modified: new Date(data.modified),
         title: html_entities_1.XmlEntities.decode(data.title.rendered),
-        author: data.coauthors[0].display_name,
+        authors: (data.coauthors || []).map(function (author) { return authorMapper(author); }),
         image: data._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url,
     };
 };
 var addContent = function (data) {
     return __assign(__assign({}, reshapeArticles(data)), { body: parseArticle_1.default(html_entities_1.AllHtmlEntities.decode(data.content.rendered.trim())) });
 };
-module.exports = { fetchAllPosts: fetchAllPosts, fetchSinglePost: fetchSinglePost };
+module.exports = { fetchAllPosts: fetchAllPosts, fetchSinglePostById: fetchSinglePostById, fetchSinglePostBySlug: fetchSinglePostBySlug };
