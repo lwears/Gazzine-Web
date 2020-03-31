@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, Linking } from 'react-native';
 
 
-const buildParagraph = (content) => {
+const buildParagraph = (content, key) => {
   if(content.hasOwnProperty('text')) {
     let mod = {};
     if (content.hasOwnProperty('modifiers')) {
@@ -16,14 +16,13 @@ const buildParagraph = (content) => {
       })
     } 
     if (content.hasOwnProperty('href')) {
-      return <Text style={mod} onPress={() => Linking.openURL(content.href)}>{content.text}</Text>;
+      return <Text key={key} style={mod} onPress={() => Linking.openURL(content.href)}>{content.text}</Text>;
     }
-    return <Text style={mod}>{content.text}</Text>;
+    return <Text key={key} style={mod}>{content.text}</Text>;
   }
   if(content.hasOwnProperty('linebreak')) {
-    return <Text>{'\n'}</Text>;
+    return <Text key={key} >{'\n'}</Text>;
   }
-  
 }
 
 export default buildParagraph;

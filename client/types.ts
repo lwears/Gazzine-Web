@@ -22,3 +22,73 @@ export interface Article extends IDType {
   authors: Array<Author>;
   image: ImageSourcePropType;
 }
+
+export interface ArticleWithBody extends Article {
+  body: ArticleBodyType;
+}
+
+export enum ElementIdentifierType {
+  paragraph = 'paragraph',
+  image = 'image',
+  imageGallery = 'imageGallery',
+  header = 'header',
+  quote = 'quote',
+  listItem = 'listItem',
+  unknown = 'unknown',
+}
+
+export interface ElementBaseType {
+  type: ElementIdentifierType;
+  k?: string;
+}
+
+// Paragraph
+export enum ModifierType {
+  strong = 'strong',
+  em = 'em',
+}
+
+export interface ParagraphChildType {
+  text?: string;
+  modifiers?: Array<ModifierType>;
+  href?: string;
+  linebreak?: boolean;
+}
+
+export interface ParagraphType extends ElementBaseType {
+  content: Array<ParagraphChildType>;
+}
+
+export interface HeaderType extends ElementBaseType {
+  size: number;
+  text: string;
+}
+
+export interface QuoteType extends ElementBaseType {
+  content: Array<string>;
+}
+
+export interface ImageType extends ElementBaseType {
+  imageId: string;
+  caption?: string;
+  src?: string;
+}
+
+export interface ImageGalleryType extends ElementBaseType {
+  images: Array<ImageType>;
+  caption?: string;
+}
+
+export interface ListItemType extends ElementBaseType {
+  first?: boolean;
+  last?: boolean;
+  content: Array<ParagraphChildType>;
+}
+
+export interface UnknownType extends ElementBaseType {}
+
+export type ElementType = ParagraphType | ImageType | ImageGalleryType | HeaderType | QuoteType | ListItemType | UnknownType;
+
+export interface ArticleBodyType {
+  elements: Array<ElementType>;
+}

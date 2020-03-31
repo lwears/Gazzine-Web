@@ -3,6 +3,7 @@ import { ScrollView, View,  Text, FlatList, Image} from 'react-native';
 import axios from 'axios';
 import buildArticle from '../helpers/buildArticle';
 import styles from '../styles/styles'
+import { ElementType } from '../types'
 
 const Article = ({ navigation, route }) => {
   const [article, setArticle] = useState(undefined);
@@ -38,7 +39,7 @@ const Article = ({ navigation, route }) => {
       <Text>{article.title}</Text>
       <FlatList
         data={article.body.elements}
-        renderItem={({ item }: { item: any}) => buildArticle(item)}
+        renderItem={({ item }: { item: ElementType}) => buildArticle(item)}
         keyExtractor={(item: any, i: number) => i.toString()}
       />
     </ScrollView>
