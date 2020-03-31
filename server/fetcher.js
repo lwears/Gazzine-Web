@@ -39,19 +39,27 @@ const authorMapper = ({ display_name, user_id, profile_picture }) => ({
     name: display_name,
     profilePictureUrl: `https://www.gazzine.com${profile_picture}`,
 });
+const categoryMapper = (category) => ({
+    id: category.id,
+    name: html_entities_1.XmlEntities.decode(category.name)
+});
+const dateMapper = (date) => {
+    return date.toLocaleDateString(undefined, {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+    });
+};
 const reshapeArticles = (data) => {
+    const { id, slug, modified, title: { rendered: title }, coauthors, _embedded: { 'wp:term': categories }, _embedded: { 'wp:featuredmedia': images } } = data;
     return {
-        id: data.id,
-        slug: data.slug,
-        category: data._embedded['wp:term'][0].map(cat => ({ id: cat.id, name: html_entities_1.XmlEntities.decode(cat.name) })),
-        modified: new Date(data.modified).toLocaleDateString(undefined, {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-        }),
-        title: html_entities_1.XmlEntities.decode(data.title.rendered),
-        authors: (data.coauthors || []).map(author => authorMapper(author)),
-        image: data._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url,
+        id,
+        slug,
+        category: categories[0].map((cat) => categoryMapper(cat)),
+        modified: dateMapper(new Date(modified)),
+        title: html_entities_1.XmlEntities.decode(title),
+        authors: (coauthors || []).map((author) => authorMapper(author)),
+        image: images[0].media_details.sizes.medium.source_url,
     };
 };
 const addContent = (data) => {

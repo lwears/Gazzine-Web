@@ -1,6 +1,7 @@
 import { fetchAllPosts, fetchSinglePostById, fetchSinglePostBySlug } from './fetcher';
+import { Response, Request } from 'express';
 
-const getAllPosts = async (req, res) => {
+const getAllPosts = async (req: Request , res: Response) => {
   const { page } = req.query
   const result = await fetchAllPosts(page);
   res.set('Access-Control-Allow-Origin', "*")
@@ -8,10 +9,9 @@ const getAllPosts = async (req, res) => {
   res.json(result);
 };
 
-const getSinglePost = async (req, res) => {
+const getSinglePost = async (req: Request, res: Response) => {
   const { id } = req.query;
   const { slug } = req.query;
-  console.log(req.query);
   if ( id ) {
     const result = await fetchSinglePostById(id);
     res.set('Access-Control-Allow-Origin', "*")
