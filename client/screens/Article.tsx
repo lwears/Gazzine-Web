@@ -3,9 +3,9 @@ import { ScrollView, View,  Text, FlatList, Image} from 'react-native';
 import axios from 'axios';
 import buildArticle from '../helpers/buildArticle';
 import styles from '../styles/styles'
-import { ElementType } from '../types'
+import { ElementType, Category, Author } from '../types'
 
-const Article = ({ navigation, route }) => {
+const Article = ({ navigation }) => {
   const [article, setArticle] = useState(undefined);
   
   const fetchArticle = async () => {
@@ -28,15 +28,21 @@ const Article = ({ navigation, route }) => {
   
   return (
     <ScrollView>
-      <Image style={styles.topImage} source={{uri: article.image}}/>
-      <FlatList
-        data={article.category}
-        renderItem={({ item }: { item: any}) => <Text style={styles.quote}>{item.name}</Text>}
-        keyExtractor={(item: any) => item.id.toString()}
-      />
-      <Text>{article.authors[0].name}</Text>
-      <Image style={styles.image} source={{ uri: article.authors[0].profilePictureUrl}} />
-      <Text>{article.title}</Text>
+      <Image style={styles.articleTopImage} source={{uri: article.image}}/>
+      <View style={styles.articleCategories}>
+        {article.category.map((cat: Category, i: number) => <Text key={i} style={styles.articleCategory}>{cat.name}</Text>)}
+      </View>
+      <View style={styles.articleAuthorContainer}>
+        {article.authors.map((author: Author) => {
+          return (
+            <View key={author.id} style={styles.articleAuthor}>
+              <Image style={styles.articleAuthorImage} source={{ uri: author.profilePictureUrl}} />
+              <Text style={styles.articleAuthorName} >{author.name}</Text>
+            </View>
+          )
+        })}
+      </View>
+      <Text style={styles.articleTitle}>{article.title}</Text>
       <FlatList
         data={article.body.elements}
         renderItem={({ item }: { item: ElementType}) => buildArticle(item)}

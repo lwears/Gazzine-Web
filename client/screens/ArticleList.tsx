@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import axios from 'axios';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import Card from '../components/card';
+import { Article } from '../types';
+import styles from '../styles/styles';
 
-function ArticleList({ navigation }) {
-  const [articles, setArticles] = useState([]);
-  const [page, setPage] = useState(1);
+const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [page, setPage] = useState<number>(1);
   
-  const updateArticles = async (pageNr) => {
-    const {data} = await axios.get(`http://localhost:8080/?page=${pageNr}`);
+  const updateArticles = async (pageNr: number) => {
+    const { data } = await axios.get(`http://localhost:8080/?page=${pageNr}`);
     setArticles([...articles, ...data ]);
   };
 
@@ -17,10 +20,7 @@ function ArticleList({ navigation }) {
     setPage(page + 1);
   };
   
-  useEffect(() => {
-    
-    updateArticles(1);
-  }, []);
+  useEffect(() => { updateArticles(1); }, []);
   
   if (articles.length === 0) {
     return (
@@ -33,25 +33,15 @@ function ArticleList({ navigation }) {
   return (
     <FlatList
       data={articles}
-      renderItem={({item}) => <Card article={item} navigation={navigation} /> }
-      keyExtractor={item => item.id.toString()}
+      renderItem={({item}: {item: Article}) => <Card article={item} navigation={navigation} /> }
+      keyExtractor={(item: Article) => item.id.toString()}
       onEndReached={fetchMoreArticles}
       />
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-
 ArticleList.navigationOptions = {
   title: "Articles"
 }
-
-ArticleList.path = "";
 
 export default ArticleList;

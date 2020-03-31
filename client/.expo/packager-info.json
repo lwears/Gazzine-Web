@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19004,
-  "packagerPid": 62538,
-  "expoServerNgrokUrl": "https://yh-x5y.anonymous.client.exp.direct",
-  "packagerNgrokUrl": "https://packager.yh-x5y.anonymous.client.exp.direct",
-  "ngrokPid": 62569,
+  "packagerPid": 63838,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": 19006
 }

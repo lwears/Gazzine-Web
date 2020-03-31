@@ -12,8 +12,8 @@ const buildArticle = (element: any) => {
     case 'image':
       return (
         <> 
-          <Image style={styles.image} source={{uri: element.src}}/>
-          <Text>{element.caption}</Text>
+          <Image style={styles.articleImage} source={{uri: element.src}}/>
+          <Text style={styles.articleImageCaption}>{element.caption}</Text>
         </>
       );
     case 'quote':
@@ -29,7 +29,7 @@ const buildArticle = (element: any) => {
       return element.images.map((image:ImageType) => (
         <Image 
           key={image.imageId} 
-          style={styles.image} 
+          style={styles.articleImage} 
           source={{uri: image.src}}
         />))
     case 'listItem':

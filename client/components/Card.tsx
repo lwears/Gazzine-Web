@@ -7,7 +7,7 @@ import styles from '../styles/styles';
 
 export interface Props {
   article: Article;
-  navigation: NavigationStackProp<{ slug: string }>;
+  navigation: NavigationStackProp;
 }
 
 const Card: FunctionComponent<Props> = ( props ) => {
