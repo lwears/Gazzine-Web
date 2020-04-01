@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    // fontFamily: 'Roboto'
   },
   articleTopImage: {
     width: width,
@@ -23,6 +22,9 @@ const styles = StyleSheet.create({
   },
   articleImageCaption: {
     color: 'gray',
+    fontSize: 11,
+    textAlign: 'center',
+    marginVertical: 5,
   },
   articleCategories: {
     justifyContent: 'center',
@@ -34,8 +36,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     fontWeight: 'bold',
   },
-  articleAuthorContainer: {
-
+  articleContainer: {
+    padding: 10,
   },
   articleAuthor: {
     left: '30%',
@@ -56,17 +58,30 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 28,
     textAlign: 'center',
-    marginHorizontal: 10,
     marginTop:20,
     marginBottom: 15,
   },
   articleParagraph: {
-    marginHorizontal: 10,
     marginVertical: 7,
-    fontFamily: 'Roboto'
+    lineHeight: 20,
+    fontFamily: 'roboto-regular',
   },
   quote: {
-    color: 'red',
+    color: '#aaa',
+  },
+  quoteBackground: {
+    height: 29*0.6,
+    width: 31*0.6,
+    resizeMode: 'contain',
+    marginRight: 15
+  },
+  quoteContainer: {
+    flexDirection: 'row',
+  },
+  quoteTextContainer: {
+    width: 0,
+    flexGrow: 1,
+    flex: 1,
   },
   cardStyle: {
     marginBottom: 5,
@@ -85,6 +100,7 @@ const styles = StyleSheet.create({
   },
   cardCategory: {
     marginLeft: 15,
+    fontFamily: 'roboto-regular',
   },
   cardDescription: {
     marginTop: 'auto',
@@ -100,15 +116,22 @@ const styles = StyleSheet.create({
   cardAuthor: {
     borderRadius: 3,
     borderWidth: 1,
+    borderColor: '#bbb',
     paddingHorizontal: 10,
     paddingVertical: 3,
     alignSelf: "flex-start",
     marginTop: 10,
     marginBottom: 5,
     marginRight: 3,
+    fontFamily: 'roboto-regular',
   },
   cardTitle: {
     fontWeight: 'bold',
+    fontFamily: 'roboto-regular',
+  },
+  cardModified: {
+    fontFamily: 'roboto-regular',
+    whiteSpace: 'nowrap'
   }
 });
 

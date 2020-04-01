@@ -24,8 +24,10 @@ const Card: FunctionComponent<Props> = ( props ) => {
           )}
         </View>
         <View style={styles.cardDescription}>
-          <Text style={styles.cardTitle}>{article.title}</Text>
-          <Text>{article.modified}</Text>
+          <View>
+            <Text style={styles.cardTitle}>{article.title}</Text>
+            <Text style={styles.cardModified}>{article.modified}</Text>
+          </View>
           <View style={styles.cardAuthors}>{article.authors.map((author: Author) => 
             <Text key={author.id} style={styles.cardAuthor}>{author.name}</Text>
             )}

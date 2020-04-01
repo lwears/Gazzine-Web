@@ -22,9 +22,9 @@ const buildParagraph = (content: ParagraphChildType, key: number) => {
       })
     } 
     if (content.hasOwnProperty('href')) {
-      return <Text key={key} style={[mod, styles.articleParagraph]} onPress={() => Linking.openURL(content.href)}>{content.text}</Text>;
+      return <Text key={key} style={mod} onPress={() => Linking.openURL(content.href)}>{content.text}</Text>;
     }
-    return <Text key={key} style={[mod, styles.articleParagraph]}>{content.text}</Text>;
+    return <Text key={key} style={mod}>{content.text}</Text>;
   }
   if(content.hasOwnProperty('linebreak')) {
     return <Text key={key} >{'\n'}</Text>;
