@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    fontFamily: 'Roboto'
+    // fontFamily: 'Roboto'
   },
   articleTopImage: {
     width: width,
@@ -33,6 +33,9 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     marginHorizontal: 10,
     fontWeight: 'bold',
+  },
+  articleAuthorContainer: {
+
   },
   articleAuthor: {
     left: '30%',

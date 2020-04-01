@@ -12,7 +12,9 @@ const buildArticle = (element: any) => {
     case 'image':
       return (
         <> 
-          <Image style={styles.articleImage} source={{uri: element.src}}/>
+        {Image.getSize(element.src, (width, height) => <Image style={{width: width, height: height}} source={{uri: element.src}}/>
+        , () => {})}
+          {/* <Image style={styles.articleImage} source={{uri: element.src}}/> */}
           <Text style={styles.articleImageCaption}>{element.caption}</Text>
         </>
       );
