@@ -8,17 +8,9 @@ npm-debug.*
 *.orig.*
 web-build/
 web-report/
+node_modules
 
-# server
-/server/node_modules
-/server/.env
-/server/parsers
-# /server/types.ts
-# /server/types.js
 
-# client
-client/node_modules
-client/.expo
 
 # macOS
 .DS_Store
