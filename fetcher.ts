@@ -9,15 +9,9 @@ require('dotenv').config();
 const baseUrl = 'https://www.gazzine.com/wp-json/wp/v2/';
 
 
-const fetchAllPosts = async (page = 1): Promise<Article[]> => {
-  const { data } = await axios.get(`${baseUrl}posts?page=${page}&_embed`);
+const fetchAllPosts = async (page = 1, category = ''): Promise<Article[]> => {
+  const { data } = await axios.get(`${baseUrl}posts?page=${page}&category=${category}&_embed`);
   const result = data.map((article: any) => reshapeArticles(article));
-  return Promise.resolve(result);
-};
-
-const fetchSinglePostById = async (id: string): Promise<ArticleWithBody> => {
-  const {data} = await axios.get(`${baseUrl}posts/${id}?_embed`);
-  const result = addContent(data);
   return Promise.resolve(result);
 };
 
@@ -77,4 +71,4 @@ const addContent = (data: any): ArticleWithBody => {
   }
 }
 
-module.exports = { fetchAllPosts, fetchSinglePostById, fetchSinglePostBySlug};
+module.exports = { fetchAllPosts, fetchSinglePostBySlug};
