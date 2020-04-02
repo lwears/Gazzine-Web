@@ -7,10 +7,11 @@ import styles from '../styles/styles';
 interface Props {
   article: Article;
   navigation: NavigationStackProp;
+  updateCategory: Function;
 }
 
 const Card: FunctionComponent<Props> = ( props ) => {
-  const { article, navigation } = props;
+  const { article, navigation, updateCategory } = props;
   
   const onPress = (): void => { navigation.navigate('Article', { slug: article.slug }) };
 
@@ -18,8 +19,10 @@ const Card: FunctionComponent<Props> = ( props ) => {
     <TouchableOpacity style={styles.cardStyle} onPress={onPress}>
       <ImageBackground style={styles.cardBackgroundImage} source={{ uri: article.image}}>
         <View style={styles.cardCategoryBox}>
-          {article.category.map((cat: Category) => 
-            <Text key={cat.id} style={styles.cardCategory}>{cat.name}</Text>
+          {article.category.map((cat: Category) =>
+          <TouchableOpacity key={cat.id} onPress={() => updateCategory(cat.id)}>
+            <Text style={styles.cardCategory}>{cat.name}</Text>
+          </TouchableOpacity>
           )}
         </View>
         <View style={styles.cardDescription}>
