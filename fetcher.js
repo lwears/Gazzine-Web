@@ -18,14 +18,10 @@ const html_entities_1 = require("html-entities");
 require('dotenv').config();
 // const baseUrl = process.env.BASEURL;
 const baseUrl = 'https://www.gazzine.com/wp-json/wp/v2/';
-const fetchAllPosts = (page = 1) => __awaiter(void 0, void 0, void 0, function* () {
-    const { data } = yield axios_1.default.get(`${baseUrl}posts?page=${page}&_embed`);
+const fetchAllPosts = (page = 1, category = '') => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(`${baseUrl}posts?page=${page}&categories=${category}&_embed`);
+    const { data } = yield axios_1.default.get(`${baseUrl}posts?page=${page}&categories=${category}&_embed`);
     const result = data.map((article) => reshapeArticles(article));
-    return Promise.resolve(result);
-});
-const fetchSinglePostById = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const { data } = yield axios_1.default.get(`${baseUrl}posts/${id}?_embed`);
-    const result = addContent(data);
     return Promise.resolve(result);
 });
 const fetchSinglePostBySlug = (slug) => __awaiter(void 0, void 0, void 0, function* () {
@@ -67,4 +63,4 @@ const reshapeArticles = (data) => {
 const addContent = (data) => {
     return Object.assign(Object.assign({}, reshapeArticles(data)), { body: parseArticle_1.default(html_entities_1.AllHtmlEntities.decode(data.content.rendered.trim())) });
 };
-module.exports = { fetchAllPosts, fetchSinglePostById, fetchSinglePostBySlug };
+module.exports = { fetchAllPosts, fetchSinglePostBySlug };

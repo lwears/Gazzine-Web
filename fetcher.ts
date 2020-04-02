@@ -10,7 +10,9 @@ const baseUrl = 'https://www.gazzine.com/wp-json/wp/v2/';
 
 
 const fetchAllPosts = async (page = 1, category = ''): Promise<Article[]> => {
-  const { data } = await axios.get(`${baseUrl}posts?page=${page}&category=${category}&_embed`);
+  console.log(`${baseUrl}posts?page=${page}&categories=${category}&_embed`);
+  
+  const { data } = await axios.get(`${baseUrl}posts?page=${page}&categories=${category}&_embed`);
   const result = data.map((article: any) => reshapeArticles(article));
   return Promise.resolve(result);
 };
