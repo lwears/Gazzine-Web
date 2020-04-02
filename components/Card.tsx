@@ -4,8 +4,7 @@ import { NavigationStackProp } from 'react-navigation-stack';
 import { Article, Category, Author } from '../types'
 import styles from '../styles/styles';
 
-
-export interface Props {
+interface Props {
   article: Article;
   navigation: NavigationStackProp;
 }
@@ -17,19 +16,19 @@ const Card: FunctionComponent<Props> = ( props ) => {
 
   return (
     <TouchableOpacity style={styles.cardStyle} onPress={onPress}>
-      <ImageBackground style={styles.cardBackgroundImage} source={article.image}>
+      <ImageBackground style={styles.cardBackgroundImage} source={{ uri: article.image}}>
         <View style={styles.cardCategoryBox}>
           {article.category.map((cat: Category) => 
-          <Text key={cat.id} style={styles.cardCategory} >{cat.name}</Text>
+            <Text key={cat.id} style={styles.cardCategory} >{cat.name}</Text>
           )}
         </View>
         <View style={styles.cardDescription}>
-          <View>
-            <Text style={styles.cardTitle}>{article.title}</Text>
+          <Text>
+            <Text style={styles.cardTitle}>{article.title} </Text>
             <Text style={styles.cardModified}>{article.modified}</Text>
-          </View>
+          </Text>
           <View style={styles.cardAuthors}>{article.authors.map((author: Author) => 
-            <Text key={author.id} style={styles.cardAuthor}>{author.name}</Text>
+              <Text key={author.id} style={styles.cardAuthor}>{author.name}</Text>
             )}
           </View>
         </View>

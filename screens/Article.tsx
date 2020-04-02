@@ -1,13 +1,13 @@
 import React, { useState, useEffect} from 'react';
 import { ScrollView, View,  Text, FlatList, Image} from 'react-native';
 import axios from 'axios';
+import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import buildArticle from '../helpers/buildArticle';
 import styles from '../styles/styles'
-import { ElementType, Category, Author } from '../types'
-// import * as Font from 'expo-font';
+import { ElementType, Category, Author, ArticleWithBody } from '../types'
 
-const Article = ({ navigation }) => {
-  const [article, setArticle] = useState(undefined);
+const Article: NavigationStackScreenComponent = ({ navigation }) => {
+  const [article, setArticle] = useState<ArticleWithBody>(undefined);
   
   const fetchArticle = async () => {
     const { slug } = navigation.state.params;
@@ -16,11 +16,6 @@ const Article = ({ navigation }) => {
   }
 
   useEffect(() => {
-    // Font.loadAsync({
-    //   'roboto-medium': require('../assets/fonts/Roboto-Medium.ttf'),
-    //   'roboto-light': require('../assets/fonts/Roboto-Light.ttf'),
-    //   'roboto-regular': require('../assets/fonts/Roboto-Regular.ttf')
-    // });
     fetchArticle();
     return () => {setArticle(undefined)}
   }, []);
@@ -38,7 +33,7 @@ const Article = ({ navigation }) => {
       <Image style={styles.articleTopImage} source={{uri: article.image}}/>
       <View style={styles.articleContainer}>
         <View style={styles.articleCategories}>
-          {article.category.map((cat: Category, i: number) => <Text key={i} style={styles.articleCategory}>{cat.name}</Text>)}
+          {article.category.map((cat: Category) => <Text key={cat.id} style={styles.articleCategory}>{cat.name}</Text>)}
         </View>
         <View>
           {article.authors.map((author: Author) => {
@@ -54,7 +49,7 @@ const Article = ({ navigation }) => {
         <FlatList
           data={article.body.elements}
           renderItem={({ item }: { item: ElementType}) => buildArticle(item)}
-          keyExtractor={(item: any, i: number) => i.toString()}
+          keyExtractor={(item: any) => item.k}
         />
       </View>
     </ScrollView>

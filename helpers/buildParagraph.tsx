@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, Linking } from 'react-native';
 import { ParagraphChildType } from '../types';
-import styles from '../styles/styles';
 
 interface modTypes {
   fontWeight?: 'bold';

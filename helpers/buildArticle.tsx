@@ -1,40 +1,25 @@
 import React from 'react';
-import { Text, Image, ImageBackground, View } from 'react-native';
+import { Text, Image, View } from 'react-native';
 import buildParagraph from './buildParagraph';
 import { ParagraphChildType, ImageType } from '../types'
 import ImageLoader from '../components/ImageLoader';
+import QuoteBuilder from '../components/QuoteBuilder';
 import styles from '../styles/styles';
+import ParagraphBuilder from '../components/ParagraphBuilder';
 
 const buildArticle = (element: any) => {
   const { type } = element;
   switch (type) {
     case "paragraph":
-      return <Text style={styles.articleParagraph}>{element.content.map((content: ParagraphChildType, i: number) => buildParagraph(content, i))}
-        </Text>
+      return <ParagraphBuilder paragraph={element}/>;
     case 'image':
       return <ImageLoader image={element}/>;
     case 'quote':
-      return (
-        <View style={styles.quoteContainer}>
-          <Image style={styles.quoteBackground} source="https://www.gazzine.com/wp-content/themes/Total/assets/images/quote.png"/>
-          <View style={styles.quoteTextContainer}>
-            {element.content.map((content: string, i: number) => (
-              <Text key={i} style={styles.quote}>
-                {content}
-              </Text>
-            ))}
-          </View>
-      </View>
-      )
+      return <QuoteBuilder quote={element}/>
     case 'header':
       return <Text>{element.text}</Text>
     case 'imageGallery':
-      return element.images.map((image:ImageType) => (
-        <Image 
-          key={image.imageId} 
-          style={styles.articleImage} 
-          source={{uri: image.src}}
-        />))
+      return <ImageLoader image={element.images[0]}/>;
     case 'listItem':
       return element.content.map((content: ParagraphChildType, i: number) => (
         <Text key={i}>

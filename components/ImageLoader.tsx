@@ -1,10 +1,15 @@
-import React, { useState, useEffect }from 'react';
-import {Image, Text, Dimensions} from 'react-native';
+import React, { useState, useEffect, FunctionComponent }from 'react';
+import { Image, Text, Dimensions } from 'react-native';
 import styles from '../styles/styles';
+import { ImageType } from '../types';
 
-export default function ImageLoader({image}) {
-  const [imageWidth, setImageWidth] = useState(undefined);
-  const [imageHeight, setImageHeight] = useState(undefined);
+interface Props {
+  image: ImageType;
+}
+
+const ImageLoader: FunctionComponent<Props> = ({image}) => {
+  const [imageWidth, setImageWidth] = useState<number>(undefined);
+  const [imageHeight, setImageHeight] = useState<number>(undefined);
 
   const { width } = Dimensions.get('window');
   
@@ -30,3 +35,5 @@ export default function ImageLoader({image}) {
     </>
   )
 }
+
+export default ImageLoader;

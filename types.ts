@@ -20,7 +20,7 @@ export interface Article extends IDType {
   modified: string; // This is a string for now, should we have a date instead?
   title: string;
   authors: Array<Author>;
-  image: ImageSourcePropType;
+  image: string;
 }
 
 export interface ArticleWithBody extends Article {
