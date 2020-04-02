@@ -132,6 +132,34 @@ const styles = StyleSheet.create({
   cardModified: {
     fontFamily: 'roboto-regular',
     whiteSpace: 'nowrap'
+  },
+  articleHeader: {
+    fontWeight: 'bold',
+    marginVertical: 7,
+  },
+  articleH1:{
+    fontSize: 32,
+  },
+  articleH2:{
+    fontSize: 24,
+  },
+  articleH3:{
+    fontSize: 19,
+  },
+  articleH4:{
+    fontSize: 16,
+  },
+  articleH5:{
+    fontSize: 13,
+  },
+  articleH6:{
+    fontSize: 11,
+  },
+  listContainer: {
+    flexDirection: 'row',
+  },
+  listItem: {
+    lineHeight: 20,
   }
 });
 

@@ -33,7 +33,7 @@ const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <FlatList
       data={articles}
-      renderItem={({item}: {item: Article}) => <Card article={item} navigation={navigation} /> }
+      renderItem={({item}: {item: Article}) => <Card article={item} navigation={navigation}/> }
       keyExtractor={(item: Article) => item.id.toString()}
       onEndReached={fetchMoreArticles}
       />

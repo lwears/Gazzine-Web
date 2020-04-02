@@ -19,7 +19,7 @@ const Card: FunctionComponent<Props> = ( props ) => {
       <ImageBackground style={styles.cardBackgroundImage} source={{ uri: article.image}}>
         <View style={styles.cardCategoryBox}>
           {article.category.map((cat: Category) => 
-            <Text key={cat.id} style={styles.cardCategory} >{cat.name}</Text>
+            <Text key={cat.id} style={styles.cardCategory}>{cat.name}</Text>
           )}
         </View>
         <View style={styles.cardDescription}>
