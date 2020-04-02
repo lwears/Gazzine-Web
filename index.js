@@ -20,7 +20,6 @@ const getAllPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 const getSinglePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.query;
     const { slug } = req.query;
-    console.log(req.query);
     if (id) {
         const result = yield fetcher_1.fetchSinglePostById(id);
         res.set('Access-Control-Allow-Origin', "*");
