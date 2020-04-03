@@ -8,22 +8,34 @@ require('dotenv').config();
 // const baseUrl = process.env.BASEURL;
 const baseUrl = 'https://www.gazzine.com/wp-json/wp/v2/';
 
-const fetchAllPosts = async (page = 1, category = '', author = ''): Promise<Article[]> => {
-  console.log(`${baseUrl}posts?page=${page}&categories=${category}&_embed`);
+interface Filter {
+  page: number;
+  category?: number;
+  author?: number;
+}
+
+type fetchReturn = Article[] | ArticleWithBody | string;
+
+export const fetchAllPosts = async ({page, category, author}: Filter): Promise<fetchReturn> => {
+  const url = `${baseUrl}posts?page=${page}&categories=${category ? category : ''}&author=${author ? author : ''}&_embed`
   try {
-    const { data } = await axios.get(`${baseUrl}posts?page=${page}&categories=${category}&author=${author}&_embed`);
+    const { data } = await axios.get(url);
     const result = data.map((article: any) => reshapeArticles(article));
     return Promise.resolve(result);
-    } catch (error) {
-      // Needs to have return 
+  } catch (error) {
+    return Promise.reject('No more articles')
   }
 };
 
-const fetchSinglePostBySlug = async (slug: string): Promise<ArticleWithBody> => {
+export const fetchSinglePostBySlug = async (slug: string): Promise<fetchReturn> => {
   const newSlug = encodeURI(slug);
-  const {data} = await axios.get(`${baseUrl}posts/?slug=${newSlug}&_embed`);
-  const result = addContent(data[0]);
-  return Promise.resolve(result);
+  try {
+    const {data} = await axios.get(`${baseUrl}posts/?slug=${newSlug}&_embed`);
+    const result = addContent(data[0]);
+    return Promise.resolve(result);
+  } catch (error) {
+    return Promise.reject('Couldn\'t find article');
+  }
 };
 
 const authorMapper = ({display_name, user_id, profile_picture}: any): Author => ({
@@ -75,4 +87,3 @@ const addContent = (data: any): ArticleWithBody => {
   }
 }
 
-module.exports = { fetchAllPosts, fetchSinglePostBySlug};

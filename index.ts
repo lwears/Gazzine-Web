@@ -3,36 +3,35 @@ import { Response, Request } from 'express';
 
 const getAllPosts = async (req: Request , res: Response) => {
   const { page, category, author } = req.query;
+  const filter = {
+    page,
+    category,
+    author,
+  }
   console.log(req.query)
-  let result;
-  // if ( category !== 'undefined' ) {
-  //   result = await fetchAllPosts(page, category);
-  // } else {
-  //   result = await fetchAllPosts(page);
-  // }
-  category !== 'undefined' ? result = await fetchAllPosts(page, category) : result = await fetchAllPosts(page);
-
-  if ( !result ) {
+  try {
+    const result = await fetchAllPosts(filter);
     res.set('Access-Control-Allow-Origin', "*");
     res.set('Access-Control-Allow-Methods', 'GET');
-    return res.status(404).json({message: 'no more articles'});
+    res.json(result);
+  } catch (error) {
+    res.set('Access-Control-Allow-Origin', "*");
+    res.set('Access-Control-Allow-Methods', 'GET');
+    return res.status(404).json({message: 'No more articles'});
   }
-  res.set('Access-Control-Allow-Origin', "*");
-  res.set('Access-Control-Allow-Methods', 'GET');
-  res.json(result);
 };
 
 const getSinglePost = async (req: Request, res: Response) => {
   const { slug } = req.query;
-  if (slug) {
+  try {
     const result = await fetchSinglePostBySlug(slug);
     res.set('Access-Control-Allow-Origin', "*");
     res.set('Access-Control-Allow-Methods', 'GET');
     res.json(result);
-  } else {
+  } catch (error) {
     res.set('Access-Control-Allow-Origin', "*");
     res.set('Access-Control-Allow-Methods', 'GET');
-    res.sendStatus(404);
+    res.status(404).json({message: 'Couldn\'t find article are you sure you have the right link?'}); 
   }
 };
 

@@ -18,22 +18,27 @@ const html_entities_1 = require("html-entities");
 require('dotenv').config();
 // const baseUrl = process.env.BASEURL;
 const baseUrl = 'https://www.gazzine.com/wp-json/wp/v2/';
-const fetchAllPosts = (page = 1, category = '', author = '') => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(`${baseUrl}posts?page=${page}&categories=${category}&_embed`);
+exports.fetchAllPosts = ({ page, category, author }) => __awaiter(void 0, void 0, void 0, function* () {
+    const url = `${baseUrl}posts?page=${page}&categories=${category ? category : ''}&author=${author ? author : ''}&_embed`;
     try {
-        const { data } = yield axios_1.default.get(`${baseUrl}posts?page=${page}&categories=${category}&author=${author}&_embed`);
+        const { data } = yield axios_1.default.get(url);
         const result = data.map((article) => reshapeArticles(article));
         return Promise.resolve(result);
     }
     catch (error) {
-        // Needs to have return 
+        return Promise.reject('No more articles');
     }
 });
-const fetchSinglePostBySlug = (slug) => __awaiter(void 0, void 0, void 0, function* () {
+exports.fetchSinglePostBySlug = (slug) => __awaiter(void 0, void 0, void 0, function* () {
     const newSlug = encodeURI(slug);
-    const { data } = yield axios_1.default.get(`${baseUrl}posts/?slug=${newSlug}&_embed`);
-    const result = addContent(data[0]);
-    return Promise.resolve(result);
+    try {
+        const { data } = yield axios_1.default.get(`${baseUrl}posts/?slug=${newSlug}&_embed`);
+        const result = addContent(data[0]);
+        return Promise.resolve(result);
+    }
+    catch (error) {
+        return Promise.reject('Couldn\'t find article');
+    }
 });
 const authorMapper = ({ display_name, user_id, profile_picture }) => ({
     id: user_id,
@@ -68,4 +73,3 @@ const reshapeArticles = (data) => {
 const addContent = (data) => {
     return Object.assign(Object.assign({}, reshapeArticles(data)), { body: parseArticle_1.default(html_entities_1.AllHtmlEntities.decode(data.content.rendered.trim())) });
 };
-module.exports = { fetchAllPosts, fetchSinglePostBySlug };

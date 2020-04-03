@@ -12,35 +12,36 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fetcher_1 = require("./fetcher");
 const getAllPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { page, category, author } = req.query;
+    const filter = {
+        page,
+        category,
+        author,
+    };
     console.log(req.query);
-    let result;
-    // if ( category !== 'undefined' ) {
-    //   result = await fetchAllPosts(page, category);
-    // } else {
-    //   result = await fetchAllPosts(page);
-    // }
-    category !== 'undefined' ? result = yield fetcher_1.fetchAllPosts(page, category) : result = yield fetcher_1.fetchAllPosts(page);
-    if (!result) {
+    try {
+        const result = yield fetcher_1.fetchAllPosts(filter);
         res.set('Access-Control-Allow-Origin', "*");
         res.set('Access-Control-Allow-Methods', 'GET');
-        return res.status(404).json({ message: 'no more articles' });
+        res.json(result);
     }
-    res.set('Access-Control-Allow-Origin', "*");
-    res.set('Access-Control-Allow-Methods', 'GET');
-    res.json(result);
+    catch (error) {
+        res.set('Access-Control-Allow-Origin', "*");
+        res.set('Access-Control-Allow-Methods', 'GET');
+        return res.status(404).json({ message: 'No more articles' });
+    }
 });
 const getSinglePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { slug } = req.query;
-    if (slug) {
+    try {
         const result = yield fetcher_1.fetchSinglePostBySlug(slug);
         res.set('Access-Control-Allow-Origin', "*");
         res.set('Access-Control-Allow-Methods', 'GET');
         res.json(result);
     }
-    else {
+    catch (error) {
         res.set('Access-Control-Allow-Origin', "*");
         res.set('Access-Control-Allow-Methods', 'GET');
-        res.sendStatus(404);
+        res.status(404).json({ message: 'Couldn\'t find article are you sure you have the right link?' });
     }
 });
 module.exports = { getAllPosts, getSinglePost };
