@@ -18,11 +18,16 @@ const html_entities_1 = require("html-entities");
 require('dotenv').config();
 // const baseUrl = process.env.BASEURL;
 const baseUrl = 'https://www.gazzine.com/wp-json/wp/v2/';
-const fetchAllPosts = (page = 1, category = '') => __awaiter(void 0, void 0, void 0, function* () {
+const fetchAllPosts = (page = 1, category = '', author = '') => __awaiter(void 0, void 0, void 0, function* () {
     console.log(`${baseUrl}posts?page=${page}&categories=${category}&_embed`);
-    const { data } = yield axios_1.default.get(`${baseUrl}posts?page=${page}&categories=${category}&_embed`);
-    const result = data.map((article) => reshapeArticles(article));
-    return Promise.resolve(result);
+    try {
+        const { data } = yield axios_1.default.get(`${baseUrl}posts?page=${page}&categories=${category}&author=${author}&_embed`);
+        const result = data.map((article) => reshapeArticles(article));
+        return Promise.resolve(result);
+    }
+    catch (error) {
+        // Needs to have return 
+    }
 });
 const fetchSinglePostBySlug = (slug) => __awaiter(void 0, void 0, void 0, function* () {
     const newSlug = encodeURI(slug);
