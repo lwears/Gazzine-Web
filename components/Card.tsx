@@ -7,11 +7,16 @@ import styles from '../styles/styles';
 interface Props {
   article: Article;
   navigation: NavigationStackProp;
+  update: Updaters;
+}
+
+interface Updaters {
   updateCategory: Function;
+  updateAuthor: Function;
 }
 
 const Card: FunctionComponent<Props> = ( props ) => {
-  const { article, navigation, updateCategory } = props;
+  const { article, navigation, update: { updateCategory, updateAuthor } } = props;
   
   const onPress = (): void => { navigation.navigate('Article', { slug: article.slug }) };
 
@@ -30,8 +35,10 @@ const Card: FunctionComponent<Props> = ( props ) => {
             <Text style={styles.cardTitle}>{article.title} </Text>
             <Text style={styles.cardModified}>{article.modified}</Text>
           </Text>
-          <View style={styles.cardAuthors}>{article.authors.map((author: Author) => 
-              <Text key={author.id} style={styles.cardAuthor}>{author.name}</Text>
+          <View style={styles.cardAuthors}>{article.authors.map((author: Author) =>
+            <TouchableOpacity key={author.id} onPress={() => updateAuthor(author.id)}>
+              <Text style={styles.cardAuthor}>{author.name}</Text>
+            </TouchableOpacity>
             )}
           </View>
         </View>

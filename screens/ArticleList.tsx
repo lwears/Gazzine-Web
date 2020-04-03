@@ -14,19 +14,30 @@ const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
   const [moreArticles, setMoreArticles] = useState<boolean>(true)
   // let flatlistRef;
 
+  const resetState = () => {
+      setPage(1);
+      setMoreArticles(true);
+      setArticles([]);
+  }
+
   const updateCategory = (id: number) => {
     if(id === category) {
-      // flatlistRef.scrollToIndex({animated: true, index: 0})
       setCategory(undefined);
-      setPage(1);
-      setMoreArticles(true);
-      setArticles([]);
     } else {
-      setPage(1);
-      setMoreArticles(true);
       setCategory(id);
-      setArticles([]);
+      setAuthor(undefined)
     }
+    resetState();
+  }
+
+  const updateAuthor = (id: number) => {
+    if(id === author) {
+      setAuthor(undefined);
+    } else {
+      setAuthor(id);
+      setCategory(undefined)
+    }
+    resetState();
   }
   
   const updateArticles = async (pageNr: number) => {
@@ -40,7 +51,7 @@ const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
 
   const fetchMoreArticles = async () => {
     if( moreArticles ) {
-      if ( category ) {
+      if ( category || author ) {
         fetchMoreOnCategory(page + 1);
         setPage(page + 1);
       } else {
@@ -51,8 +62,10 @@ const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
   };
 
   const fetchMoreOnCategory = async (pageNr: number) => {
+    const categoryValue = category ? category : '';
+    const authorValue = author ? author : '';
     try {
-      const { data } = await axios.get(`http://localhost:8080/?page=${pageNr}&category=${category}`);
+      const { data } = await axios.get(`http://localhost:8080/?page=${pageNr}&category=${categoryValue}&author=${authorValue}`);
       setArticles([...articles, ...data]);
     } catch(err) {
       setMoreArticles(false);
@@ -63,7 +76,7 @@ const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
 
   useEffect(() => {
     fetchMoreOnCategory(1);
-  }, [category]);
+  }, [category, author]);
   
   if (articles.length === 0) {
     return (
@@ -76,7 +89,7 @@ const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
   return (
     <FlatList
       data={articles}
-      renderItem={({item}: {item: Article}) => <Card article={item} navigation={navigation} updateCategory={updateCategory}/>}
+      renderItem={({item}: {item: Article}) => <Card article={item} navigation={navigation} update={{updateCategory, updateAuthor}}/>}
       keyExtractor={(item: Article) => item.id.toString()}
       onEndReached={fetchMoreArticles}
       // ref={ref => {flatlistRef = ref}}
