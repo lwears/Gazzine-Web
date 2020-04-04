@@ -160,6 +160,9 @@ const styles = StyleSheet.create({
   },
   listItem: {
     lineHeight: 20,
+  },
+  searchBar: {
+
   }
 });
 

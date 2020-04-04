@@ -3,7 +3,7 @@ import { ScrollView, View,  Text, FlatList, Image} from 'react-native';
 import axios from 'axios';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import buildArticle from '../helpers/buildArticle';
-import styles from '../styles/styles'
+import styles from '../styles/styles';
 import { ElementType, Category, Author, ArticleWithBody } from '../types'
 
 const Article: NavigationStackScreenComponent = ({ navigation }) => {
@@ -12,7 +12,7 @@ const Article: NavigationStackScreenComponent = ({ navigation }) => {
   const fetchArticle = async () => {
     const { slug } = navigation.state.params;
     try {
-      const { data } = await axios.get(`http://localhost:8081/?slug=${slug}`);
+      const { data } = await axios.get(`http://localhost:8080/?type=SinglePost&slug=${slug}`);
       setArticle(data);      
     } catch (error) {
       console.error(error.message);
