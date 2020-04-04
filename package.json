@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "functions-framework --target=getAllPosts",
+    "start": "functions-framework --target=getPosts",
     "start2": "functions-framework --port=8081 --target=getSinglePost",
     "build": "tsc"
   },

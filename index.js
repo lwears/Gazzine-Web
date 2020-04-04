@@ -10,38 +10,60 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fetcher_1 = require("./fetcher");
-const getAllPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { page, category, author } = req.query;
-    const filter = {
-        page,
-        category,
-        author,
-    };
+const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { type, page } = req.query;
     console.log(req.query);
-    try {
-        const result = yield fetcher_1.fetchAllPosts(filter);
-        res.set('Access-Control-Allow-Origin', "*");
-        res.set('Access-Control-Allow-Methods', 'GET');
-        res.json(result);
-    }
-    catch (error) {
-        res.set('Access-Control-Allow-Origin', "*");
-        res.set('Access-Control-Allow-Methods', 'GET');
-        return res.status(404).json({ message: 'No more articles' });
+    switch (type) {
+        case 'AllPosts':
+            console.log('hello', req.query);
+            const { category, author } = req.query;
+            const filter = {
+                page,
+                category,
+                author,
+            };
+            try {
+                const result = yield fetcher_1.fetchAllPosts(filter);
+                res.set('Access-Control-Allow-Origin', "*");
+                res.set('Access-Control-Allow-Methods', 'GET');
+                return res.json(result);
+            }
+            catch (error) {
+                res.set('Access-Control-Allow-Origin', "*");
+                res.set('Access-Control-Allow-Methods', 'GET');
+                return res.status(404).json({ message: 'No more articles' });
+            }
+        case 'SinglePost':
+            console.log('hello2', req.query);
+            const { slug } = req.query;
+            try {
+                const result = yield fetcher_1.fetchSinglePostBySlug(slug);
+                res.set('Access-Control-Allow-Origin', "*");
+                res.set('Access-Control-Allow-Methods', 'GET');
+                return res.json(result);
+            }
+            catch (error) {
+                res.set('Access-Control-Allow-Origin', "*");
+                res.set('Access-Control-Allow-Methods', 'GET');
+                return res.status(404).json({ message: 'Couldn\'t find article are you sure you have the right link?' });
+            }
+        case 'Search':
+            const { search } = req.query;
+            try {
+                const result = yield fetcher_1.fetchOnSearch({ page, search });
+                res.set('Access-Control-Allow-Origin', "*");
+                res.set('Access-Control-Allow-Methods', 'GET');
+                return res.json(result);
+            }
+            catch (error) {
+                res.set('Access-Control-Allow-Origin', "*");
+                res.set('Access-Control-Allow-Methods', 'GET');
+                return res.status(404).json({ message: 'Couldn\'t find article are you sure you have the right link?' });
+            }
+        default:
+            res.set('Access-Control-Allow-Origin', "*");
+            res.set('Access-Control-Allow-Methods', 'GET');
+            return res.status(404).json({ message: 'Nothing here wrong type' });
     }
 });
-const getSinglePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { slug } = req.query;
-    try {
-        const result = yield fetcher_1.fetchSinglePostBySlug(slug);
-        res.set('Access-Control-Allow-Origin', "*");
-        res.set('Access-Control-Allow-Methods', 'GET');
-        res.json(result);
-    }
-    catch (error) {
-        res.set('Access-Control-Allow-Origin', "*");
-        res.set('Access-Control-Allow-Methods', 'GET');
-        res.status(404).json({ message: 'Couldn\'t find article are you sure you have the right link?' });
-    }
-});
-module.exports = { getAllPosts, getSinglePost };
+module.exports = { getPosts };

@@ -1,3 +1,5 @@
+import { XmlEntities } from "html-entities";
+
 export type IDType = {
   readonly id: number;
 };
@@ -16,7 +18,7 @@ export interface Article extends IDType {
   slug: string;
   category: Array<Category>;
   modified: string; // This is a string for now, should we have a date instead?
-  title: string;
+  title: XmlEntities;
   authors: Array<Author>;
   image: string;
 }

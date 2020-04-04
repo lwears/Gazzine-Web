@@ -38,6 +38,22 @@ export const fetchSinglePostBySlug = async (slug: string): Promise<fetchReturn> 
   }
 };
 
+interface Search {
+  page: number;
+  search: string;
+}
+
+export const fetchOnSearch = async ({page = 1, search}: Search): Promise<fetchReturn> => {
+  const url = `${baseUrl}posts?page=${page}&search=${search}&_embed`
+  try {
+    const { data } = await axios.get(url);
+    const result = data.map((article: any) => reshapeArticles(article));
+    return Promise.resolve(result);
+  } catch (error) {
+    return Promise.reject('No articles found');
+  }
+};
+
 const authorMapper = ({display_name, user_id, profile_picture}: any): Author => ({
   id: user_id,
   name: display_name,

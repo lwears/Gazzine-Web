@@ -40,6 +40,17 @@ exports.fetchSinglePostBySlug = (slug) => __awaiter(void 0, void 0, void 0, func
         return Promise.reject('Couldn\'t find article');
     }
 });
+exports.fetchOnSearch = ({ page = 1, search }) => __awaiter(void 0, void 0, void 0, function* () {
+    const url = `${baseUrl}posts?page=${page}&search=${search}&_embed`;
+    try {
+        const { data } = yield axios_1.default.get(url);
+        const result = data.map((article) => reshapeArticles(article));
+        return Promise.resolve(result);
+    }
+    catch (error) {
+        return Promise.reject('No articles found');
+    }
+});
 const authorMapper = ({ display_name, user_id, profile_picture }) => ({
     id: user_id,
     name: display_name,
