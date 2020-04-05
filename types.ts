@@ -18,7 +18,7 @@ export interface Article extends IDType {
   slug: string;
   category: Array<Category>;
   modified: string; // This is a string for now, should we have a date instead?
-  title: XmlEntities;
+  title: string;
   authors: Array<Author>;
   image: string;
 }

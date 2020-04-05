@@ -13,13 +13,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
-const parseArticle_1 = __importDefault(require("./parsers/parseArticle"));
 const html_entities_1 = require("html-entities");
+const parseArticle_1 = __importDefault(require("./parsers/parseArticle"));
 require('dotenv').config();
+const XmlEntity = new html_entities_1.XmlEntities();
+const HTMLEntity = new html_entities_1.AllHtmlEntities();
 // const baseUrl = process.env.BASEURL;
 const baseUrl = 'https://www.gazzine.com/wp-json/wp/v2/';
 exports.fetchAllPosts = ({ page, category, author }) => __awaiter(void 0, void 0, void 0, function* () {
-    const url = `${baseUrl}posts?page=${page}&categories=${category ? category : ''}&author=${author ? author : ''}&_embed`;
+    const url = `${baseUrl}posts?page=${page}&categories=${category || ''}&author=${author || ''}&_embed`;
     try {
         const { data } = yield axios_1.default.get(url);
         const result = data.map((article) => reshapeArticles(article));
@@ -58,29 +60,25 @@ const authorMapper = ({ display_name, user_id, profile_picture }) => ({
 });
 const categoryMapper = (category) => ({
     id: category.id,
-    name: html_entities_1.XmlEntities.decode(category.name)
+    name: XmlEntity.decode(category.name),
 });
-const dateMapper = (date) => {
-    return date.toLocaleDateString(undefined, {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-};
+const dateMapper = (date) => date.toLocaleDateString(undefined, {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+});
 const reshapeArticles = (data) => {
-    const { id, slug, modified, title: { rendered: title }, coauthors, _embedded: { 'wp:term': categories }, _embedded: { 'wp:featuredmedia': images } } = data;
+    const { id, slug, modified, title: { rendered: title }, coauthors, _embedded: { 'wp:term': categories }, _embedded: { 'wp:featuredmedia': images }, } = data;
     return {
         id,
         slug,
         category: categories[0].map((cat) => categoryMapper(cat)),
         modified: dateMapper(new Date(modified)),
-        title: html_entities_1.XmlEntities.decode(title),
+        title: XmlEntity.decode(title),
         authors: (coauthors || []).map((author) => authorMapper(author)),
         image: images[0].media_details.sizes.medium.source_url,
     };
 };
-const addContent = (data) => {
-    return Object.assign(Object.assign({}, reshapeArticles(data)), { body: parseArticle_1.default(html_entities_1.AllHtmlEntities.decode(data.content.rendered.trim())) });
-};
+const addContent = (data) => (Object.assign(Object.assign({}, reshapeArticles(data)), { body: parseArticle_1.default(HTMLEntity.decode(data.content.rendered.trim())) }));
