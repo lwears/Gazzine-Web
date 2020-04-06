@@ -20,39 +20,6 @@ const XmlEntity = new html_entities_1.XmlEntities();
 const HTMLEntity = new html_entities_1.AllHtmlEntities();
 // const baseUrl = process.env.BASEURL;
 const baseUrl = 'https://www.gazzine.com/wp-json/wp/v2/';
-exports.fetchAllPosts = ({ page, category, author }) => __awaiter(void 0, void 0, void 0, function* () {
-    const url = `${baseUrl}posts?page=${page}&categories=${category || ''}&author=${author || ''}&_embed`;
-    try {
-        const { data } = yield axios_1.default.get(url);
-        const result = data.map((article) => reshapeArticles(article));
-        return Promise.resolve(result);
-    }
-    catch (error) {
-        return Promise.reject('No more articles');
-    }
-});
-exports.fetchSinglePostBySlug = (slug) => __awaiter(void 0, void 0, void 0, function* () {
-    const newSlug = encodeURI(slug);
-    try {
-        const { data } = yield axios_1.default.get(`${baseUrl}posts/?slug=${newSlug}&_embed`);
-        const result = addContent(data[0]);
-        return Promise.resolve(result);
-    }
-    catch (error) {
-        return Promise.reject('Couldn\'t find article');
-    }
-});
-exports.fetchOnSearch = ({ page = 1, search }) => __awaiter(void 0, void 0, void 0, function* () {
-    const url = `${baseUrl}posts?page=${page}&search=${search}&_embed`;
-    try {
-        const { data } = yield axios_1.default.get(url);
-        const result = data.map((article) => reshapeArticles(article));
-        return Promise.resolve(result);
-    }
-    catch (error) {
-        return Promise.reject('No articles found');
-    }
-});
 const authorMapper = ({ display_name, user_id, profile_picture }) => ({
     id: user_id,
     name: display_name,
@@ -82,3 +49,36 @@ const reshapeArticles = (data) => {
     };
 };
 const addContent = (data) => (Object.assign(Object.assign({}, reshapeArticles(data)), { body: parseArticle_1.default(HTMLEntity.decode(data.content.rendered.trim())) }));
+exports.fetchAllPosts = ({ page, category, author }) => __awaiter(void 0, void 0, void 0, function* () {
+    const url = `${baseUrl}posts?page=${page}&categories=${category || ''}&author=${author || ''}&_embed`;
+    try {
+        const { data } = yield axios_1.default.get(url);
+        const result = data.map((article) => reshapeArticles(article));
+        return Promise.resolve(result);
+    }
+    catch (error) {
+        return Promise.reject(error);
+    }
+});
+exports.fetchSinglePostBySlug = (slug) => __awaiter(void 0, void 0, void 0, function* () {
+    const newSlug = encodeURI(slug);
+    try {
+        const { data } = yield axios_1.default.get(`${baseUrl}posts/?slug=${newSlug}&_embed`);
+        const result = addContent(data[0]);
+        return Promise.resolve(result);
+    }
+    catch (error) {
+        return Promise.reject(error);
+    }
+});
+exports.fetchOnSearch = ({ page = 1, search }) => __awaiter(void 0, void 0, void 0, function* () {
+    const url = `${baseUrl}posts?page=${page}&search=${search}&_embed`;
+    try {
+        const { data } = yield axios_1.default.get(url);
+        const result = data.map((article) => reshapeArticles(article));
+        return Promise.resolve(result);
+    }
+    catch (error) {
+        return Promise.reject(error);
+    }
+});

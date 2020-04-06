@@ -7,7 +7,7 @@ import {
 
 require('dotenv').config();
 
-const XmlEntity = new XmlEntities()
+const XmlEntity = new XmlEntities();
 const HTMLEntity = new AllHtmlEntities();
 
 // const baseUrl = process.env.BASEURL;
@@ -20,44 +20,6 @@ interface Filter {
 }
 
 type fetchReturn = Article[] | ArticleWithBody | string;
-
-export const fetchAllPosts = async ({ page, category, author }: Filter): Promise<fetchReturn> => {
-  const url = `${baseUrl}posts?page=${page}&categories=${category || ''}&author=${author || ''}&_embed`;
-  try {
-    const { data } = await axios.get(url);
-    const result = data.map((article: any) => reshapeArticles(article));
-    return Promise.resolve(result);
-  } catch (error) {
-    return Promise.reject('No more articles');
-  }
-};
-
-export const fetchSinglePostBySlug = async (slug: string): Promise<fetchReturn> => {
-  const newSlug = encodeURI(slug);
-  try {
-    const { data } = await axios.get(`${baseUrl}posts/?slug=${newSlug}&_embed`);
-    const result = addContent(data[0]);
-    return Promise.resolve(result);
-  } catch (error) {
-    return Promise.reject('Couldn\'t find article');
-  }
-};
-
-interface Search {
-  page: number;
-  search: string;
-}
-
-export const fetchOnSearch = async ({ page = 1, search }: Search): Promise<fetchReturn> => {
-  const url = `${baseUrl}posts?page=${page}&search=${search}&_embed`;
-  try {
-    const { data } = await axios.get(url);
-    const result = data.map((article: any) => reshapeArticles(article));
-    return Promise.resolve(result);
-  } catch (error) {
-    return Promise.reject('No articles found');
-  }
-};
 
 const authorMapper = ({ display_name, user_id, profile_picture }: any): Author => ({
   id: user_id,
@@ -104,3 +66,41 @@ const addContent = (data: any): ArticleWithBody => ({
   ...reshapeArticles(data),
   body: parseArticle(HTMLEntity.decode(data.content.rendered.trim())),
 });
+
+export const fetchAllPosts = async ({ page, category, author }: Filter): Promise<fetchReturn> => {
+  const url = `${baseUrl}posts?page=${page}&categories=${category || ''}&author=${author || ''}&_embed`;
+  try {
+    const { data } = await axios.get(url);
+    const result = data.map((article: any) => reshapeArticles(article));
+    return Promise.resolve(result);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const fetchSinglePostBySlug = async (slug: string): Promise<fetchReturn> => {
+  const newSlug = encodeURI(slug);
+  try {
+    const { data } = await axios.get(`${baseUrl}posts/?slug=${newSlug}&_embed`);
+    const result = addContent(data[0]);
+    return Promise.resolve(result);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+interface Search {
+  page: number;
+  search: string;
+}
+
+export const fetchOnSearch = async ({ page = 1, search }: Search): Promise<fetchReturn> => {
+  const url = `${baseUrl}posts?page=${page}&search=${search}&_embed`;
+  try {
+    const { data } = await axios.get(url);
+    const result = data.map((article: any) => reshapeArticles(article));
+    return Promise.resolve(result);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
