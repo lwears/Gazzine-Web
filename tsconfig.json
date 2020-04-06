@@ -10,8 +10,4 @@
     "target": "ES5",
     "module": "commonJS",
   },
-  "files": [
-    "./cloudfunctions/fetcher.ts",
-    "./cloudfunctions/index.ts",
-  ]
 }

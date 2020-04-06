@@ -1,5 +1,3 @@
-import { ImageSourcePropType } from 'react-native'
-
 export type IDType = {
   readonly id: number;
 };

@@ -7,9 +7,9 @@ interface Props {
   header: HeaderType;
 }
 
-const HeaderBuilder:  FunctionComponent<Props> = ({header}) => {
-  const headerStyle = `articleH${header.size}`
+const HeaderBuilder: FunctionComponent<Props> = ({ header }) => {
+  const headerStyle = `articleH${header.size}`;
   return <Text style={[styles[headerStyle], styles.articleHeader]}>{header.text}</Text>;
-}
+};
 
 export default HeaderBuilder;

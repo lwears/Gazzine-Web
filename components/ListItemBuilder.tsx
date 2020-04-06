@@ -7,19 +7,17 @@ interface Props {
   listItem: ListItemType;
 }
 
-const ListItemBuilder: FunctionComponent<Props> = ({listItem}) => {
-  return (
-    <>
-      {listItem.content.map((content: ParagraphChildType) => (
+const ListItemBuilder: FunctionComponent<Props> = ({ listItem }) => (
+  <>
+    {listItem.content.map((content: ParagraphChildType) => (
       <View key={listItem.k} style={styles.listContainer}>
         <Text style={[styles.listItem, styles.listItemBullet]}>•</Text>
         <Text style={styles.listItem}>
           {content.text}
         </Text>
       </View>
-      ))}
-    </>
-  );
-}
+    ))}
+  </>
+);
 
 export default ListItemBuilder;

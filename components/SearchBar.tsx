@@ -1,6 +1,11 @@
 import React, { FunctionComponent } from 'react';
-import { TextInput, View, Image, TouchableOpacity } from 'react-native';
+import {
+  TextInput, View, Image, TouchableOpacity,
+} from 'react-native';
 import styles from '../styles/styles';
+
+const ClearTextImg = require('../assets/times-circle-solid.svg');
+const MagGlassImg = require('../assets/search-solid.svg');
 
 interface Props {
   searchValue: string;
@@ -12,25 +17,27 @@ const SearchBar: FunctionComponent<Props> = (props) => {
 
   return (
     <View style={styles.searchBar}>
-      <Image 
+      <Image
         style={styles.searchBarSearch}
-        source={require('../assets/search-solid.svg')}
+        source={MagGlassImg}
       />
-      <TextInput 
-        placeholder={'Search...'}
+      <TextInput
+        placeholder="Search..."
         style={styles.searchBarInput}
-        defaultValue={searchValue} 
+        defaultValue={searchValue}
         onSubmitEditing={(event) => updateSearch(event.nativeEvent.text)}
       />
       {
-        searchValue ?
-          <TouchableOpacity onPress={() => updateSearch(undefined)}>
-          <Image 
-            style={styles.searchBarCancel}
-            source={require('../assets/times-circle-solid.svg')}
-          />
-          </TouchableOpacity>:
-          <></>
+        searchValue
+          ? (
+            <TouchableOpacity onPress={() => updateSearch(undefined)}>
+              <Image
+                style={styles.searchBarCancel}
+                source={ClearTextImg}
+              />
+            </TouchableOpacity>
+          )
+          : <></>
       }
     </View>
   );

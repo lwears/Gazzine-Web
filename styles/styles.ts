@@ -190,6 +190,26 @@ const styles = StyleSheet.create({
     width: width,
     justifyContent: 'center',
     alignContent: 'center'
+  },
+  imageGalleryDotsContainer: {
+    flexDirection: 'row', 
+    justifyContent: 'center'
+  },
+  imageGalleryDots: {
+    height: 10, 
+    width: 10, 
+    backgroundColor: '#595959', 
+    margin: 8, 
+    borderRadius: 5 
+  },
+  notFoundContainer: {
+
+  },
+  notFoundHeader: {
+    textAlign: 'center',
+  },
+  notFoundText: {
+    textAlign: 'center',
   }
 });
 
