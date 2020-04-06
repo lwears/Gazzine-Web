@@ -12,7 +12,7 @@ const ListItemBuilder: FunctionComponent<Props> = ({listItem}) => {
     <>
       {listItem.content.map((content: ParagraphChildType) => (
       <View key={listItem.k} style={styles.listContainer}>
-        <Text style={styles.listItem}>•  </Text>
+        <Text style={[styles.listItem, styles.listItemBullet]}>•</Text>
         <Text style={styles.listItem}>
           {content.text}
         </Text>

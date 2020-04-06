@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';
-import { ScrollView, View,  Text, FlatList, Image} from 'react-native';
+import { ScrollView, View,  Text, FlatList, Image, ActivityIndicator} from 'react-native';
 import axios from 'axios';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import buildArticle from '../helpers/buildArticle';
@@ -26,8 +26,8 @@ const Article: NavigationStackScreenComponent = ({ navigation }) => {
   
   if(article === undefined) {
     return (
-      <View style={styles.container}>
-        <Text>Loading...</Text>
+      <View style={styles.loading}>
+        <ActivityIndicator size='large' color='black'/>
       </View>
     )
   }
@@ -59,5 +59,9 @@ const Article: NavigationStackScreenComponent = ({ navigation }) => {
     </ScrollView>
   );
 }
+
+Article.navigationOptions = {
+  animationEnabled: false,
+};
 
 export default Article;

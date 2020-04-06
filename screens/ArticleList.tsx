@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, FlatList } from 'react-native';
+import { Text, View, FlatList, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import Card from '../components/card';
@@ -16,9 +16,9 @@ const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
   const [search, setSearch] = useState<string>(undefined);
 
   const resetState = () => {
-      setPage(1);
-      setMoreArticles(true);
-      setArticles([]);
+    setPage(1);
+    setMoreArticles(true);
+    setArticles([]);
   }
 
   const updateCategory = (id: number) => {
@@ -108,15 +108,15 @@ const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
   
   if (articles.length === 0) {
     return (
-      <View style={styles.container}>
-        <Text>loading...</Text>
+      <View style={styles.loading}>
+        <ActivityIndicator size='large' color='black'/>
       </View>
     )
   }
   
   return (
     <>
-    <SearchBar search={updateSearch}/>
+    <SearchBar updateSearch={updateSearch} searchValue={search}/>
     <FlatList
       data={articles}
       renderItem={({item}: {item: Article}) => <Card article={item} navigation={navigation} update={{updateCategory, updateAuthor}}/>}
@@ -128,7 +128,8 @@ const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
 }
 
 ArticleList.navigationOptions = {
-  title: "Articles"
+  title: "Articles",
+  animationEnabled: false,
 }
 
 export default ArticleList;
