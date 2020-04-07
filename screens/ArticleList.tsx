@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, ActivityIndicator } from 'react-native';
+import { FlatList } from 'react-native';
 import axios from 'axios';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
 import Card from '../components/Card';
 import { Article } from '../types';
-import styles from '../styles/styles';
 import SearchBar from '../components/SearchBar';
+import Loading from '../components/Loading';
+import baseUrl from '../vars';
 
 const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -56,7 +57,7 @@ const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
 
   const updateArticles = async (pageNr: number) => {
     try {
-      const { data } = await axios.get(`http://localhost:8080/?type=AllPosts&page=${pageNr}`);
+      const { data } = await axios.get(`${baseUrl}?type=AllPosts&page=${pageNr}`);
       setArticles([...articles, ...data]);
     } catch (err) {
       setMoreArticles(false);
@@ -66,7 +67,7 @@ const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
   const fetchMoreOnCategory = async (pageNr: number) => {
     if (search) {
       try {
-        const { data } = await axios.get(`http://localhost:8080/?type=Search&page=${pageNr}&search=${search}`);
+        const { data } = await axios.get(`${baseUrl}?type=Search&page=${pageNr}&search=${search}`);
         setArticles([...articles, ...data]);
       } catch (error) {
         setMoreArticles(false);
@@ -76,7 +77,7 @@ const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
       const authorValue = author || '';
 
       try {
-        const { data } = await axios.get(`http://localhost:8080/?type=AllPosts&page=${pageNr}&category=${categoryValue}&author=${authorValue}`);
+        const { data } = await axios.get(`${baseUrl}?type=AllPosts&page=${pageNr}&category=${categoryValue}&author=${authorValue}`);
         setArticles([...articles, ...data]);
       } catch (err) {
         setMoreArticles(false);
@@ -104,9 +105,7 @@ const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
 
   if (articles.length === 0) {
     return (
-      <View style={styles.loading}>
-        <ActivityIndicator size="large" color="black" />
-      </View>
+      <Loading/>
     );
   }
 

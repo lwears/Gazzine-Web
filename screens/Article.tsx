@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  ScrollView, View, Text, FlatList, Image, ActivityIndicator, Button
+  ScrollView, View, Text, FlatList, Image
 } from 'react-native';
 import axios from 'axios';
 import {
@@ -11,6 +11,9 @@ import styles from '../styles/styles';
 import {
   ElementType, Category, Author, ArticleWithBody,
 } from '../types';
+import Loading from '../components/Loading';
+import NotFound from '../components/NotFound';
+import baseUrl from '../vars';
 
 const Article: NavigationStackScreenComponent = ({ navigation }) => {
   const [article, setArticle] = useState<ArticleWithBody>(undefined);
@@ -19,7 +22,7 @@ const Article: NavigationStackScreenComponent = ({ navigation }) => {
   const fetchArticle = async () => {
     const { slug } = navigation.state.params;
     try {
-      const { data } = await axios.get(`http://localhost:8080/?type=SinglePost&slug=${slug}`);
+      const { data } = await axios.get(`${baseUrl}?type=SinglePost&slug=${slug}`);
       setArticle(data);
     } catch (error) {
       setArticleNotFound(true);
@@ -28,37 +31,23 @@ const Article: NavigationStackScreenComponent = ({ navigation }) => {
   };
 
   const goBack = () => {
-    setArticleNotFound(false);
     setArticle(undefined);
     navigation.navigate('ArticleList');
   }
 
   useEffect(() => {
+    setArticleNotFound(false);
     fetchArticle();
-    return () => { 
-      setArticle(undefined); 
-      setArticleNotFound(false);
-    };
+    return () => setArticle(undefined);
   }, [navigation]);
 
   if (articleNotFound) {
-    return (
-      <View style={styles.notFoundContainer}>
-        <Text style={styles.notFoundHeader}>Sorry, this page could not be found.</Text>
-        <Text style={styles.notFoundText}>The page you are looking for doesn't exist, no longer exists or has been moved.</Text>
-        <Button
-          onPress={goBack}
-          title="Return to home page"
-        />
-      </View>
-    )
+    return <NotFound goBack={goBack}/>
   }
 
   if (!article) {
     return (
-      <View style={styles.loading}>
-        <ActivityIndicator size="large" color="black" />
-      </View>
+      <Loading/>
     );
   }
 
