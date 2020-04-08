@@ -37,10 +37,10 @@ Google Cloud Functions
 
 ## Future improvements:
 
-Work with Desktop browser
-Sharing articles
-Author feed
-About page
-Saving articles for later reading
-Subscription
+*  Work with Desktop browser
+* Sharing articles
+* Author feed
+* About page
+* Saving articles for later reading
+* Subscription
 
