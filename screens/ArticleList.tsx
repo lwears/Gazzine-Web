@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList } from 'react-native';
-import axios from 'axios';
 import { NavigationStackScreenComponent } from 'react-navigation-stack';
+import axios from 'axios';
 import Card from '../components/Card';
-import { Article } from '../types';
 import SearchBar from '../components/SearchBar';
 import Loading from '../components/Loading';
 import baseUrl from '../vars';
+import { Article } from '../types';
 
 const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -64,7 +64,7 @@ const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
     }
   };
 
-  const fetchMoreOnCategory = async (pageNr: number) => {
+  const fetchArticlesOnFilter = async (pageNr: number) => {
     if (search) {
       try {
         const { data } = await axios.get(`${baseUrl}?type=Search&page=${pageNr}&search=${search}`);
@@ -88,7 +88,7 @@ const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
   const fetchMoreArticles = async () => {
     if (moreArticles) {
       if (category || author || search) {
-        fetchMoreOnCategory(page + 1);
+        fetchArticlesOnFilter(page + 1);
         setPage(page + 1);
       } else {
         updateArticles(page + 1);
@@ -100,13 +100,11 @@ const ArticleList: NavigationStackScreenComponent = ({ navigation }) => {
   useEffect(() => { updateArticles(1); }, []);
 
   useEffect(() => {
-    fetchMoreOnCategory(1);
+    fetchArticlesOnFilter(1);
   }, [category, author, search]);
 
   if (articles.length === 0) {
-    return (
-      <Loading/>
-    );
+    return <Loading/>;
   }
 
   return (

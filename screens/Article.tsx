@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 import {
   ScrollView, View, Text, FlatList, Image
 } from 'react-native';
-import axios from 'axios';
 import {
   NavigationStackScreenComponent,
 } from 'react-navigation-stack';
+import axios from 'axios';
+import Loading from '../components/Loading';
+import NotFound from '../components/NotFound';
 import buildArticle from '../helpers/buildArticle';
 import styles from '../styles/styles';
+import baseUrl from '../vars';
 import {
   ElementType, Category, Author, ArticleWithBody,
 } from '../types';
-import Loading from '../components/Loading';
-import NotFound from '../components/NotFound';
-import baseUrl from '../vars';
 
 const Article: NavigationStackScreenComponent = ({ navigation }) => {
   const [article, setArticle] = useState<ArticleWithBody>(undefined);
@@ -46,9 +46,7 @@ const Article: NavigationStackScreenComponent = ({ navigation }) => {
   }
 
   if (!article) {
-    return (
-      <Loading/>
-    );
+    return <Loading/>;
   }
 
   return (
@@ -60,7 +58,7 @@ const Article: NavigationStackScreenComponent = ({ navigation }) => {
             <Text key={cat.id} style={styles.articleCategory}>{cat.name}</Text>
           ))}
         </View>
-        <View>
+        <View style={styles.articleAuthorContainer}>
           {article.authors.map((author: Author) => (
             <View key={author.id} style={styles.articleAuthor}>
               <Image

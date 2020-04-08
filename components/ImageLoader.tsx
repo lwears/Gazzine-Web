@@ -16,9 +16,9 @@ const ImageLoader: FunctionComponent<Props> = ({ image }) => {
   const { width } = Dimensions.get('window');
 
   useEffect(() => {
-    Image.getSize(image.src, (imgWidth, height) => {
+    Image.getSize(image.src, (imgWidth: number, imgHeight: number) => {
       setImageWidth(imgWidth);
-      setImageHeight(height);
+      setImageHeight(imgHeight);
     }, () => {});
   }, []);
 

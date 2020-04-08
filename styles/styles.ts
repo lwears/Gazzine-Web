@@ -8,6 +8,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  articleHeader: {
+    fontWeight: 'bold',
+    marginVertical: 7,
+  },
+  articleH1:{
+    fontSize: 32,
+  },
+  articleH2:{
+    fontSize: 24,
+  },
+  articleH3:{
+    fontSize: 19,
+  },
+  articleH4:{
+    fontSize: 16,
+  },
+  articleH5:{
+    fontSize: 13,
+  },
+  articleH6:{
+    fontSize: 11,
+  },
   articleTopImage: {
     width: width,
     height: 222 * width/300,
@@ -39,8 +61,10 @@ const styles = StyleSheet.create({
   articleContainer: {
     padding: 10,
   },
+  articleAuthorContainer: {
+    alignSelf: 'center',
+  },
   articleAuthor: {
-    left: '30%',
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 3,
@@ -133,28 +157,6 @@ const styles = StyleSheet.create({
     fontFamily: 'roboto-regular',
     whiteSpace: 'nowrap'
   },
-  articleHeader: {
-    fontWeight: 'bold',
-    marginVertical: 7,
-  },
-  articleH1:{
-    fontSize: 32,
-  },
-  articleH2:{
-    fontSize: 24,
-  },
-  articleH3:{
-    fontSize: 19,
-  },
-  articleH4:{
-    fontSize: 16,
-  },
-  articleH5:{
-    fontSize: 13,
-  },
-  articleH6:{
-    fontSize: 11,
-  },
   listContainer: {
     flexDirection: 'row',
   },
@@ -163,27 +165,6 @@ const styles = StyleSheet.create({
   },
   listItemBullet: {
     marginRight: 5,
-  },
-  searchBarInput: {
-    flexGrow: 1,
-    paddingHorizontal: 10,
-    fontSize: 18,
-  },
-  searchBar: {
-    flexDirection: "row",
-    margin: 9,
-    paddingVertical: 5,
-    paddingHorizontal: 7,
-    backgroundColor: '#ddd',
-    borderRadius: 15,
-  },
-  searchBarSearch: {
-    height: 20,
-    width: 20,
-  },
-  searchBarCancel: {
-    height: 20,
-    width: 20,
   },
   loading: {
     height: height,
@@ -202,8 +183,31 @@ const styles = StyleSheet.create({
     margin: 8, 
     borderRadius: 5 
   },
+  searchBar: {
+    flexDirection: "row",
+    margin: 9,
+    paddingVertical: 5,
+    paddingHorizontal: 7,
+    backgroundColor: '#ddd',
+    borderRadius: 15,
+  },
+  searchBarInput: {
+    flexGrow: 1,
+    paddingHorizontal: 10,
+    fontSize: 18,
+  },
+  searchBarSearch: {
+    height: 20,
+    width: 20,
+  },
+  searchBarCancel: {
+    height: 20,
+    width: 20,
+  },
   notFoundContainer: {
-
+    margin: 10,
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   notFoundHeader: {
     textAlign: 'center',
