@@ -30,10 +30,10 @@ Google Cloud Functions
 
 ## Features:
 
-Articles Feed
-Article page.
-Search functionality
-Filter. Functionality on Author and Category.
+1. Articles Feed
+2. Article page.
+3. Search functionality
+4. Filter. Functionality on Author and Category.
 
 ## Future improvements:
 
