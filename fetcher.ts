@@ -10,8 +10,7 @@ require('dotenv').config();
 const XmlEntity = new XmlEntities();
 const HTMLEntity = new AllHtmlEntities();
 
-// const baseUrl = process.env.BASEURL;
-const baseUrl = 'https://www.gazzine.com/wp-json/wp/v2/';
+const baseUrl = process.env.BASEURL;
 
 interface Filter {
   page: number;
@@ -40,7 +39,7 @@ const dateMapper = (date: Date) => date.toLocaleDateString(undefined, {
   minute: '2-digit',
 });
 
-const reshapeArticles = (data: any): Article => {
+const articleMapper = (data: any): Article => {
   const {
     id,
     slug,
@@ -62,8 +61,8 @@ const reshapeArticles = (data: any): Article => {
   };
 };
 
-const addContent = (data: any): ArticleWithBody => ({
-  ...reshapeArticles(data),
+const addBody = (data: any): ArticleWithBody => ({
+  ...articleMapper(data),
   body: parseArticle(HTMLEntity.decode(data.content.rendered.trim())),
 });
 
@@ -71,18 +70,18 @@ export const fetchAllPosts = async ({ page, category, author }: Filter): Promise
   const url = `${baseUrl}posts?page=${page}&categories=${category || ''}&author=${author || ''}&_embed`;
   try {
     const { data } = await axios.get(url);
-    const result = data.map((article: any) => reshapeArticles(article));
+    const result = data.map((article: any) => articleMapper(article));
     return Promise.resolve(result);
   } catch (error) {
     return Promise.reject(error);
   }
 };
 
-export const fetchSinglePostBySlug = async (slug: string): Promise<fetchReturn> => {
+export const fetchSinglePost = async (slug: string): Promise<fetchReturn> => {
   const newSlug = encodeURI(slug);
   try {
     const { data } = await axios.get(`${baseUrl}posts/?slug=${newSlug}&_embed`);
-    const result = addContent(data[0]);
+    const result = addBody(data[0]);
     return Promise.resolve(result);
   } catch (error) {
     return Promise.reject(error);
@@ -98,7 +97,7 @@ export const fetchOnSearch = async ({ page = 1, search }: Search): Promise<fetch
   const url = `${baseUrl}posts?page=${page}&search=${search}&_embed`;
   try {
     const { data } = await axios.get(url);
-    const result = data.map((article: any) => reshapeArticles(article));
+    const result = data.map((article: any) => articleMapper(article));
     return Promise.resolve(result);
   } catch (error) {
     return Promise.reject(error);

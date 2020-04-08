@@ -1,5 +1,5 @@
 import { Response, Request } from 'express';
-import { fetchAllPosts, fetchSinglePostBySlug, fetchOnSearch } from './fetcher';
+import { fetchAllPosts, fetchSinglePost, fetchOnSearch } from './fetcher';
 
 const getPosts = async (req: Request, res: Response) => {
   const { type, page, category, author, slug, search } = req.query;
@@ -19,7 +19,7 @@ const getPosts = async (req: Request, res: Response) => {
       }
     case 'SinglePost':
       try {
-        const result = await fetchSinglePostBySlug(slug);
+        const result = await fetchSinglePost(slug);
         return res.json(result);
       } catch (error) {
         return res.status(404).json({ message: 'Couldn\'t find article are you sure you have the right link?' });

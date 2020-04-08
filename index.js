@@ -27,7 +27,7 @@ const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             }
         case 'SinglePost':
             try {
-                const result = yield fetcher_1.fetchSinglePostBySlug(slug);
+                const result = yield fetcher_1.fetchSinglePost(slug);
                 return res.json(result);
             }
             catch (error) {

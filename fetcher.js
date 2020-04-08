@@ -18,8 +18,7 @@ const parseArticle_1 = __importDefault(require("./parsers/parseArticle"));
 require('dotenv').config();
 const XmlEntity = new html_entities_1.XmlEntities();
 const HTMLEntity = new html_entities_1.AllHtmlEntities();
-// const baseUrl = process.env.BASEURL;
-const baseUrl = 'https://www.gazzine.com/wp-json/wp/v2/';
+const baseUrl = process.env.BASEURL;
 const authorMapper = ({ display_name, user_id, profile_picture }) => ({
     id: user_id,
     name: display_name,
@@ -36,7 +35,7 @@ const dateMapper = (date) => date.toLocaleDateString(undefined, {
     hour: '2-digit',
     minute: '2-digit',
 });
-const reshapeArticles = (data) => {
+const articleMapper = (data) => {
     const { id, slug, modified, title: { rendered: title }, coauthors, _embedded: { 'wp:term': categories }, _embedded: { 'wp:featuredmedia': images }, } = data;
     return {
         id,
@@ -48,23 +47,23 @@ const reshapeArticles = (data) => {
         image: images[0].media_details.sizes.medium.source_url,
     };
 };
-const addContent = (data) => (Object.assign(Object.assign({}, reshapeArticles(data)), { body: parseArticle_1.default(HTMLEntity.decode(data.content.rendered.trim())) }));
+const addBody = (data) => (Object.assign(Object.assign({}, articleMapper(data)), { body: parseArticle_1.default(HTMLEntity.decode(data.content.rendered.trim())) }));
 exports.fetchAllPosts = ({ page, category, author }) => __awaiter(void 0, void 0, void 0, function* () {
     const url = `${baseUrl}posts?page=${page}&categories=${category || ''}&author=${author || ''}&_embed`;
     try {
         const { data } = yield axios_1.default.get(url);
-        const result = data.map((article) => reshapeArticles(article));
+        const result = data.map((article) => articleMapper(article));
         return Promise.resolve(result);
     }
     catch (error) {
         return Promise.reject(error);
     }
 });
-exports.fetchSinglePostBySlug = (slug) => __awaiter(void 0, void 0, void 0, function* () {
+exports.fetchSinglePost = (slug) => __awaiter(void 0, void 0, void 0, function* () {
     const newSlug = encodeURI(slug);
     try {
         const { data } = yield axios_1.default.get(`${baseUrl}posts/?slug=${newSlug}&_embed`);
-        const result = addContent(data[0]);
+        const result = addBody(data[0]);
         return Promise.resolve(result);
     }
     catch (error) {
@@ -75,7 +74,7 @@ exports.fetchOnSearch = ({ page = 1, search }) => __awaiter(void 0, void 0, void
     const url = `${baseUrl}posts?page=${page}&search=${search}&_embed`;
     try {
         const { data } = yield axios_1.default.get(url);
-        const result = data.map((article) => reshapeArticles(article));
+        const result = data.map((article) => articleMapper(article));
         return Promise.resolve(result);
     }
     catch (error) {
