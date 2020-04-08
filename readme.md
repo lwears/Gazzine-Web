@@ -1,4 +1,4 @@
-Gazzine Web Project
+h1 Gazzine Web Project
 
 After 12 weeks of intense studying this was our final 2 week project used to test and showcase our skills.
 
