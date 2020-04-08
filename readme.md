@@ -1,8 +1,9 @@
-h1 Gazzine Web Project
+# Gazzine Web Project
 
 After 12 weeks of intense studying this was our final 2 week project used to test and showcase our skills.
 
-Our Team Obi-Mob-Kenobi:
+The Team
+## Obi-Mob-Kenobi:
 Axel Elgenstierna
 Doug Eskelius
 Liam Wears
@@ -18,23 +19,23 @@ Reducing code, maintenance and complexity.
 
 The Mobile App is already built, and the Mobile web browser app we build should look and function the same.
 
-Technologies used:
-Backend:
+## Technologies used:
+###  Backend:
 Google Cloud Functions
 
-Frontend Specific:
+###  Frontend Specific:
 Expo
 React Native for web
 React Navigation.
 
-Features:
+## Features:
 
 Articles Feed
 Article page.
 Search functionality
 Filter. Functionality on Author and Category.
 
-Future improvements:
+## Future improvements:
 
 Work with Desktop browser
 Sharing articles
