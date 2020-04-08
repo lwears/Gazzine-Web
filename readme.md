@@ -11,7 +11,7 @@ Nicole Restrup
 
 We worked with www.gazzine.com to test a solution for replacing their mobile web page.
 
-What we wanted to solve:
+## What we wanted to solve:
 Can we use React Native for Web?
 He wanted to know does it work? If so, how well?
 Can we have a single code base for Mobile web, Mobile app and Desktop
@@ -24,9 +24,9 @@ The Mobile App is already built, and the Mobile web browser app we build should 
 Google Cloud Functions
 
 ###  Frontend Specific:
-Expo
-React Native for web
-React Navigation.
+* Expo
+* React Native for web
+* React Navigation.
 
 ## Features:
 
