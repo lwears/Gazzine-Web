@@ -2,7 +2,7 @@
 
 After 12 weeks of intense studying this was our final 2 week project used to test and showcase our skills.
 
-## The Link - Mobile only, please open on mobile
+## Mobile only link, please open on smartphone
 https://5e8c4b81abcfa657e9180366--salt-project-obi.netlify.com/
 
 The Team
