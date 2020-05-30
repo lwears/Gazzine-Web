@@ -8,7 +8,11 @@ npm-debug.*
 *.orig.*
 web-build/
 web-report/
-.netlify
+build/
+
+parsers
+*.js
+.env
 
 ### macOS ###
 # General
@@ -314,5 +318,15 @@ dist/
 tmp/
 temp/
 
-# End of https://www.gitignore.io/api/macos,reactnative
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+
+# End of https://www.gitignore.io/api/macos,reactnative,visualstudiocode
