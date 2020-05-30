@@ -29,13 +29,15 @@ The Mobile App is already built, and the Mobile web browser app we build should 
 
 ### Backend:
 
-Google Cloud Functions
+- Google Cloud Functions
+- TypeScript
 
 ### Frontend Specific:
 
 - Expo
 - React Native for web
 - React Navigation.
+- TypeScript
 
 ## Features:
 
